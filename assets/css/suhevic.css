@@ -1,0 +1,360 @@
+/*
+ * Centre Suhevic — overrides puntuales sobre la plantilla "Davies".
+ * Se carga DESPUÉS de styles.css para sobreescribir tokens y selectores.
+ *
+ * Paleta extraída de centresuhevic.com:
+ *   - Acento principal:  #b73a37  (granate / burdeos cálido)
+ *   - Secundario suave:  #c9c4c3  (taupe / piedra cálida)
+ *   - Texto cálido:       #474441
+ *   - Crema fondo:        #faf6f1  (tinte cálido del taupe)
+ *
+ * Estrategia para invertir el tema oscuro de Davies sin romper el layout:
+ *   1) :root sobrescribe `--black` (fondo principal del template) por crema
+ *      y `--white` (texto en fondo oscuro) por warm-dark. Davies escribe
+ *      siempre `var(--white)` para texto y `var(--black)` para fondo, así
+ *      que toda la app hereda el tema claro de forma natural y sus
+ *      animaciones (botón con fill que sube en hover) siguen funcionando.
+ *   2) Se respetan las pocas zonas con #000/#fff hardcoded mediante
+ *      overrides puntuales (gradientes, marquees, footer wordmark).
+ */
+
+:root {
+    /* Marca Centre Suhevic */
+    --suhevic-accent: #b73a37;
+    --suhevic-accent-soft: #c9c4c3;
+    --suhevic-warm-dark: #474441;
+    --suhevic-cream: #faf6f1;
+
+    /* Acento → granate */
+    --primary: #b73a37;
+    --primary-rgb: 183, 58, 55;
+
+    /* Davies usa --black como fondo principal de las secciones.
+       Lo cambiamos a la crema cálida del centro. */
+    --black: #faf6f1;
+    --black-64: rgba(71, 68, 65, 0.64);
+    --black-32: rgba(71, 68, 65, 0.32);
+
+    /* Davies usa --white como color de texto principal en fondo oscuro.
+       Como ahora el fondo es crema, el "texto blanco" pasa a warm-dark. */
+    --white: #474441;
+    --white-50: rgba(71, 68, 65, 0.50);
+    --white-64: rgba(71, 68, 65, 0.72); /* sube un punto para legibilidad */
+    --white-32: rgba(71, 68, 65, 0.32);
+    --white-16: rgba(71, 68, 65, 0.16);
+}
+
+/* La preset .primary-1 sigue el mismo override por si alguna sección la fija. */
+.primary-1 {
+    --primary: #b73a37;
+    --primary-rgb: 183, 58, 55;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   FONDO Y TEXTO BASE — refuerzo por si algún reset lo fija
+   ────────────────────────────────────────────────────────────── */
+
+html,
+body {
+    background-color: var(--suhevic-cream);
+    color: var(--suhevic-warm-dark);
+}
+
+.preloader {
+    background-color: var(--suhevic-cream);
+}
+
+.preloader .site-name span {
+    color: var(--suhevic-warm-dark);
+}
+
+/* ──────────────────────────────────────────────────────────────
+   GRADIENTES Y FONDOS HARDCODED CON #000
+   Davies pinta fundidos a negro en marquees y bordes. Los recoloreamos
+   a crema para que mezclen con el fondo claro.
+   ────────────────────────────────────────────────────────────── */
+
+/* Marquees laterales — fundidos del template */
+.section-tech-stack .infiniteSlide_text_main::before,
+.section-tech-stack .infiniteSlide_text_main::after,
+.section-brand .swiper-brand::before,
+.section-brand .swiper-brand::after,
+.brand-list::before,
+.brand-list::after,
+.section-selected-work .bg-img::after {
+    background: linear-gradient(90deg, var(--suhevic-cream) 0%, rgba(255, 255, 255, 0) 20%, rgba(255, 255, 255, 0) 80%, var(--suhevic-cream) 100%) !important;
+}
+
+/* Hero overlays con degradados negros sobre el vídeo */
+.section-hero-v1 .video-overlay,
+.section-hero-v1 .video-overlay-2 {
+    /* En tema claro, suavizamos para que el vídeo respire */
+    opacity: 0.45;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   AJUSTES CONCRETOS DE COMPONENTES
+   ────────────────────────────────────────────────────────────── */
+
+/* Línea horizontal entre bloques */
+.br-line,
+.br-line.d-flex {
+    background-color: var(--suhevic-accent-soft) !important;
+    opacity: 0.6;
+}
+
+/* Tags / chips de las especialidades — granate suave */
+.work-tag .tf-btn.style-2 {
+    background-color: rgba(183, 58, 55, 0.08);
+    color: var(--suhevic-warm-dark);
+    border-color: rgba(183, 58, 55, 0.25);
+}
+
+.work-tag .tf-btn.style-2:hover {
+    background-color: var(--primary);
+    color: #ffffff;
+}
+
+.work-tag .tf-btn.style-2:hover span {
+    color: #ffffff;
+}
+
+/* Header sticky con fondo translúcido */
+.tf-header {
+    background-color: rgba(250, 246, 241, 0.85);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+}
+
+/* Mobile menu fullscreen */
+.offcanvas-menu {
+    background-color: var(--suhevic-cream);
+}
+
+/* Footer wordmark "agency.png" es un PNG blanco — invisible en tema claro.
+   Filtro para llevarlo a un tono cálido oscuro suave. */
+.tf-footer .img-agency img {
+    filter: invert(1) hue-rotate(180deg) brightness(0.55) sepia(0.2);
+    opacity: 0.85;
+}
+
+/* Wrapper del iframe de Google Maps */
+.suhevic-map-wrap {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--suhevic-accent-soft);
+}
+
+.suhevic-map-wrap iframe {
+    border: 0;
+    display: block;
+    width: 100%;
+}
+
+/* Vías directas de contacto */
+.section-cta .row.g-4 a.link {
+    text-decoration: none;
+}
+
+.section-cta .row.g-4 a.link:hover {
+    color: var(--suhevic-accent);
+}
+
+/* SVG del logo en el bloque de contacto (refuerzo, ya recoloreado en HTML) */
+.section-cta .logo-site-sv svg path {
+    fill: var(--suhevic-accent) !important;
+}
+
+/* La preloader-bar + dotted divisores que el template pinta como blanco
+   ahora se ven oscuros via --white. Si alguna línea queda demasiado dura,
+   se afina con esta clase utilitaria que se puede aplicar en HTML. */
+.suhevic-soft-divider {
+    background-color: var(--suhevic-accent-soft);
+    opacity: 0.5;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   SECCIONES CON FONDO OSCURO PROPIO (vídeo o foto a sangre)
+   En estas, el flip global de --white→warm-dark deja el texto invisible
+   sobre la imagen oscura. Re-escopamos los tokens para devolver el
+   contraste original (texto claro sobre fondo oscuro).
+   ────────────────────────────────────────────────────────────── */
+
+.section-hero-v1,
+.section-service-2 {
+    --white: #ffffff;
+    --white-50: rgba(255, 255, 255, 0.50);
+    --white-64: rgba(255, 255, 255, 0.72);
+    --white-32: rgba(255, 255, 255, 0.32);
+    --white-16: rgba(255, 255, 255, 0.16);
+    --black: #1a1a1a;
+    --black-64: rgba(26, 26, 26, 0.64);
+    --black-32: rgba(26, 26, 26, 0.32);
+    color: #ffffff;
+}
+
+.section-hero-v1 h1,
+.section-hero-v1 h2,
+.section-hero-v1 h3,
+.section-hero-v1 h4,
+.section-hero-v1 h5,
+.section-service-2 h1,
+.section-service-2 h2,
+.section-service-2 h3,
+.section-service-2 h4,
+.section-service-2 h5 {
+    color: #ffffff;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   ESPECIALIDADES — la imagen de la montaña sólo decora un trozo,
+   los textos quedan sobre crema → warm-dark.
+   ────────────────────────────────────────────────────────────── */
+
+.section-selected-work,
+.section-selected-work .text-slide,
+.section-selected-work .mini-title,
+.section-selected-work h1,
+.section-selected-work h2,
+.section-selected-work h3,
+.section-selected-work h4,
+.section-selected-work h5,
+.section-selected-work p,
+.section-selected-work .text-display-2,
+.section-selected-work .btn-nav-swiper {
+    color: var(--suhevic-warm-dark);
+}
+
+/* Que la imagen de la montaña no compita con el contenido en tema claro */
+.section-selected-work .bg-img {
+    opacity: 0.18;
+    mix-blend-mode: multiply;
+}
+
+/* Chips de especialidades — granate suave (en tema claro) */
+.section-selected-work .work-tag .tf-btn.style-2 {
+    background-color: rgba(183, 58, 55, 0.08);
+    color: var(--suhevic-warm-dark);
+    border-color: rgba(183, 58, 55, 0.25);
+}
+
+.section-selected-work .work-tag .tf-btn.style-2:hover,
+.section-selected-work .work-tag .tf-btn.style-2:hover span {
+    background-color: var(--primary);
+    color: #ffffff;
+    border-color: var(--primary);
+}
+
+/* Sobre Nuria — la foto/vídeo solo cubre una franja izquierda. La columna
+   derecha (bio + lista de trayectoria) está sobre crema, así que pintamos
+   warm-dark el texto y dejamos las superposiciones sobre la imagen con
+   contraste propio si hace falta. */
+.section-about-me .col-right,
+.section-about-me .col-right h5,
+.section-about-me .col-right h6,
+.section-about-me .col-right p,
+.section-about-me .col-right li {
+    color: var(--suhevic-warm-dark);
+}
+
+.section-about-me .col-right .mini-title {
+    color: var(--suhevic-warm-dark);
+    opacity: 0.72;
+}
+
+/* La línea separadora dentro de Sobre Nuria queda más sutil en tema claro */
+.section-about-me .col-right .br-line {
+    background-color: var(--suhevic-accent-soft) !important;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   CONTACTO — fondo crema (escondemos el bg-3.png con glow verde Davies)
+   Todo el texto warm-dark sobre crema, formulario incluido.
+   ────────────────────────────────────────────────────────────── */
+
+.section-cta .bg-img {
+    display: none;
+}
+
+.section-cta {
+    background-color: var(--suhevic-cream);
+    color: var(--suhevic-warm-dark);
+}
+
+.section-cta h1,
+.section-cta h2,
+.section-cta h3,
+.section-cta h4,
+.section-cta h5,
+.section-cta p,
+.section-cta label,
+.section-cta .tf-lable,
+.section-cta .accordion-content,
+.section-cta .text-caption,
+.section-cta .text-body-1 {
+    color: var(--suhevic-warm-dark);
+}
+
+/* Inputs del formulario en tema claro */
+.section-cta .tf-input {
+    color: var(--suhevic-warm-dark);
+    border-color: rgba(71, 68, 65, 0.25);
+    background-color: transparent;
+}
+
+.section-cta .tf-input::placeholder {
+    color: rgba(71, 68, 65, 0.4);
+}
+
+.section-cta .tf-input:focus {
+    border-color: var(--primary);
+    outline: none;
+}
+
+.section-cta .nice-select,
+.section-cta .nice-select .current {
+    color: var(--suhevic-warm-dark);
+    border-color: rgba(71, 68, 65, 0.25);
+    background-color: transparent;
+}
+
+.section-cta .nice-select .list {
+    background-color: var(--suhevic-cream);
+    color: var(--suhevic-warm-dark);
+    border: 1px solid rgba(71, 68, 65, 0.15);
+}
+
+.section-cta .nice-select .option:hover,
+.section-cta .nice-select .option.focus,
+.section-cta .nice-select .option.selected.focus {
+    background-color: rgba(183, 58, 55, 0.08);
+}
+
+/* Bloque de vías directas (tel/whatsapp/dirección) */
+.section-cta .row.g-4 .text-caption,
+.section-cta .row.g-4 a.link {
+    color: var(--suhevic-warm-dark);
+}
+
+.section-cta .row.g-4 a.link:hover {
+    color: var(--suhevic-accent);
+}
+
+/* CTA principal "ENVIAR MENSAJE": granate con texto blanco */
+.section-cta .form-action .tf-btn {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: #ffffff;
+}
+
+.section-cta .form-action .tf-btn span,
+.section-cta .form-action .tf-btn .text-caption {
+    color: #ffffff;
+}
+
+.section-cta .form-action .tf-btn:hover {
+    background-color: #952b29;
+    border-color: #952b29;
+    color: #ffffff;
+}
+
