@@ -144,6 +144,14 @@ body {
     padding-top: 60px;
 }
 
+/* Botón "VOLVER AL INICIO" del 404 — texto en una línea */
+.section-404 .tf-btn {
+    padding-left: 40px;
+    padding-right: 40px;
+    height: 52px;
+    white-space: nowrap;
+}
+
 /* "SUHEVIC_" gigante del hero — oculto en móvil */
 @media (max-width: 767px) {
     .section-hero-v1 .davies-large {
