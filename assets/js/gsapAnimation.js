@@ -439,6 +439,8 @@
         const $bg = $bgList.find(".bg-image");
 
         if (!$section.length) return;
+        // Centre Suhevic: si la sección usa el carrusel Swiper, salimos sin pinning
+        if ($section.find(".swiper-services").length) return;
 
         gsap.registerPlugin(ScrollTrigger);
 

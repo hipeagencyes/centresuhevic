@@ -176,6 +176,42 @@ if ($(".swiper-process").length > 0) {
     });
 }
 
+if ($(".swiper-services").length > 0) {
+    new Swiper(".swiper-services", {
+        slidesPerView: 1,
+        spaceBetween: 0,
+        speed: 1100,
+        loop: true,
+        grabCursor: true,
+        autoplay: {
+            delay: 5500,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+        },
+        effect: "creative",
+        creativeEffect: {
+            prev: {
+                translate: ["-15%", 0, -200],
+                opacity: 0,
+                scale: 0.92,
+            },
+            next: {
+                translate: ["100%", 0, 0],
+                opacity: 0,
+                scale: 0.95,
+            },
+        },
+        navigation: {
+            nextEl: ".services-next",
+            prevEl: ".services-prev",
+        },
+        pagination: {
+            el: ".services-pagination",
+            clickable: true,
+        },
+    });
+}
+
 if ($(".slider-service-wrap").length > 0) {
     const contentThumbSlider = new Swiper(".swiper-service-thumb", {
         slidesPerView: 1,

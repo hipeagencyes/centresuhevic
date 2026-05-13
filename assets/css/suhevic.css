@@ -85,11 +85,22 @@ body {
     background: linear-gradient(90deg, var(--suhevic-cream) 0%, rgba(255, 255, 255, 0) 20%, rgba(255, 255, 255, 0) 80%, var(--suhevic-cream) 100%) !important;
 }
 
+/* Marquee del menú móvil — fundido izquierdo en negro → crema */
+.mb-menu-link .infiniteSlide_text_main::before {
+    background: linear-gradient(90deg, var(--suhevic-cream) 0%, rgba(255, 255, 255, 0) 20%, rgba(255, 255, 255, 0) 80%, rgba(255, 255, 255, 0) 100%) !important;
+}
+
 /* Hero overlays con degradados negros sobre el vídeo */
 .section-hero-v1 .video-overlay,
 .section-hero-v1 .video-overlay-2 {
     /* En tema claro, suavizamos para que el vídeo respire */
     opacity: 0.45;
+}
+
+/* Degradado de salida del hero: pasa de transparente a crema (en lugar de negro)
+   para que se funda con la siguiente sección */
+.section-hero-v1 .overlay {
+    background: linear-gradient(180deg, rgba(250, 246, 241, 0) 0%, var(--suhevic-cream) 100%) !important;
 }
 
 /* ──────────────────────────────────────────────────────────────
@@ -124,6 +135,34 @@ body {
     background-color: rgba(250, 246, 241, 0.85);
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
+    /* El header ya no se solapa con el hero: el vídeo empieza donde acaba el header */
+    margin-bottom: 0;
+}
+
+/* El hero ya no necesita compensar el solape del header */
+.section-hero-v1 {
+    padding-top: 60px;
+}
+
+/* "SUHEVIC_" gigante del hero — oculto en móvil */
+@media (max-width: 767px) {
+    .section-hero-v1 .davies-large {
+        display: none;
+    }
+}
+
+/* Header en desktop sobre fondo crema → texto warm-dark */
+@media (min-width: 768px) {
+    .tf-header .nav-menu-main a,
+    .tf-header .header-contact a,
+    .tf-header .header-contact p,
+    .tf-header .btn-mobile-menu,
+    .tf-header .btn-mobile-menu .icon {
+        color: var(--suhevic-warm-dark) !important;
+    }
+    .tf-header .nav-menu-main .item-link span {
+        color: rgba(71, 68, 65, 0.64) !important;
+    }
 }
 
 /* Mobile menu fullscreen */
@@ -165,6 +204,96 @@ body {
     fill: var(--suhevic-accent) !important;
 }
 
+/* Iconos SVG inline en las cards "Cómo trabajamos" — círculo a la derecha */
+.section-process .wg-process .img-icon {
+    display: flex;
+    justify-content: flex-end;
+    max-width: none !important;
+}
+.section-process .wg-process .img-icon svg {
+    width: 96px;
+    height: 96px;
+    flex-shrink: 0;
+    aspect-ratio: 1;
+    padding: 22px;
+    border-radius: 50%;
+    background-color: rgba(71, 68, 65, 0.08);
+    color: var(--suhevic-accent);
+    box-sizing: border-box;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+@media (min-width: 992px) {
+    .section-process .wg-process .img-icon svg {
+        width: 120px;
+        height: 120px;
+        padding: 26px;
+    }
+}
+.section-process .wg-process:hover .img-icon svg {
+    background-color: rgba(255, 255, 255, 0.18);
+    color: #ffffff;
+}
+
+/* Cómo trabajamos: invertir el solape para que S1 vaya delante y S3 detrás */
+@media (min-width: 1200px) {
+    .section-process .swiper-slide:nth-child(1) {
+        z-index: 3;
+    }
+    .section-process .swiper-slide:nth-child(2) {
+        z-index: 2;
+    }
+    .section-process .swiper-slide:nth-child(3) {
+        z-index: 1;
+    }
+    .section-process .swiper-slide:hover {
+        z-index: 4;
+    }
+    /* Intercambio dentro de la card: S1/S2/S3 a la derecha, texto a la izquierda */
+    .section-process .wg-process .bot {
+        flex-direction: row-reverse;
+    }
+    /* Títulos alineados a la derecha para que no queden tapados por la card anterior */
+    .section-process .wg-process .title {
+        text-align: right;
+    }
+}
+
+/* Badge giratorio del vídeo de Nuria — círculo fijo 156x156 con logo encajado */
+.section-about-me .col-left .badget {
+    width: 156px;
+    height: 156px;
+    background-color: #ffffff;
+    aspect-ratio: 1;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18), 0 20px 60px rgba(0, 0, 0, 0.12) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+.section-about-me .col-left .badget img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 20px;
+    box-sizing: border-box;
+}
+@media (max-width: 1199px) {
+    .section-about-me .col-left .badget {
+        width: 100px !important;
+        height: 100px !important;
+        max-width: 100px;
+    }
+    .section-about-me .col-left .badget img {
+        padding: 14px;
+    }
+}
+
+/* Vídeo de Sobre Nuria — viñeta granate en los bordes en lugar del negro */
+.section-about-me .davies-video .overlay.mark-1 {
+    background: linear-gradient(270deg, var(--suhevic-accent) 0%, rgba(255, 255, 255, 0) 20%, rgba(255, 255, 255, 0) 80%, var(--suhevic-accent) 100%) !important;
+}
+.section-about-me .davies-video .overlay.mark-2 {
+    background: linear-gradient(180deg, var(--suhevic-accent) 0%, rgba(255, 255, 255, 0) 20%, rgba(255, 255, 255, 0) 80%, var(--suhevic-accent) 100%) !important;
+}
+
 /* La preloader-bar + dotted divisores que el template pinta como blanco
    ahora se ven oscuros via --white. Si alguna línea queda demasiado dura,
    se afina con esta clase utilitaria que se puede aplicar en HTML. */
@@ -191,6 +320,137 @@ body {
     --black-64: rgba(26, 26, 26, 0.64);
     --black-32: rgba(26, 26, 26, 0.32);
     color: #ffffff;
+}
+
+.section-service-2 {
+    background-color: var(--suhevic-accent);
+}
+
+/* Carrusel "Otros servicios" — autoplay + fade, sin scroll-jacking */
+.section-service-2 .swiper-services {
+    width: 100%;
+    overflow: hidden;
+}
+
+.section-service-2 .swiper-services .swiper-slide .wg-service-2 > * {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.section-service-2 .swiper-services .swiper-slide .wg-service-2 .main-image {
+    transform: translateX(-32px) scale(0.97);
+    transition: opacity 0.9s ease, transform 1.1s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.section-service-2 .swiper-services .swiper-slide-active .wg-service-2 > * {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.section-service-2 .swiper-services .swiper-slide-active .wg-service-2 .main-image {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    transition-delay: 0.05s;
+}
+
+.section-service-2 .swiper-services .swiper-slide-active .wg-service-2 .center {
+    transition-delay: 0.25s;
+}
+
+.section-service-2 .swiper-services .swiper-slide-active .wg-service-2 .image-2 {
+    transition-delay: 0.4s;
+}
+
+.section-service-2 .swiper-services .swiper-slide .wg-service-2 .image .image,
+.section-service-2 .swiper-services .swiper-slide-active .wg-service-2 .image img {
+    transition: transform 1.4s ease-out;
+}
+
+.section-service-2 .swiper-services .swiper-slide-active .wg-service-2 .image img {
+    animation: suhevicSlideZoom 7s ease-out forwards;
+}
+
+@keyframes suhevicSlideZoom {
+    from { transform: scale(1); }
+    to { transform: scale(1.06); }
+}
+
+.section-service-2 .wg-service-2 {
+    position: static !important;
+    inset: auto !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transform: none !important;
+}
+
+.section-service-2 .image-2 {
+    opacity: 1 !important;
+}
+
+.section-service-2 .services-controls {
+    margin-top: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+}
+
+.section-service-2 .services-prev,
+.section-service-2 .services-next {
+    width: 52px;
+    height: 52px;
+    flex-shrink: 0;
+    aspect-ratio: 1;
+    
+    background: transparent;
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 0;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.section-service-2 .services-prev:hover,
+.section-service-2 .services-next:hover {
+    background-color: #ffffff;
+    color: var(--suhevic-accent);
+    border-color: #ffffff;
+}
+
+.section-service-2 .services-pagination {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-service-2 .services-pagination .swiper-pagination-bullet {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.45);
+    opacity: 1;
+    transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.section-service-2 .services-pagination .swiper-pagination-bullet-active {
+    width: 28px;
+    border-radius: 999px;
+    background-color: #ffffff;
+}
+
+@media (max-width: 991px) {
+    .section-service-2 .wg-service-2 {
+        flex-direction: column;
+        gap: 32px;
+    }
+    .section-service-2 .wg-service-2 .image-2,
+    .section-service-2 .wg-service-2 .image-simu {
+        display: none;
+    }
 }
 
 .section-hero-v1 h1,
@@ -273,7 +533,22 @@ body {
    ────────────────────────────────────────────────────────────── */
 
 .section-cta .bg-img {
-    display: none;
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.section-cta .bg-img img {
+    width: clamp(280px, 38vw, 520px);
+    height: auto;
+    opacity: 0.18;
+    animation: spin 30s linear infinite;
+    transform: none !important;
 }
 
 .section-cta {
@@ -302,9 +577,6 @@ body {
     background-color: transparent;
 }
 
-.section-cta .tf-input::placeholder {
-    color: rgba(71, 68, 65, 0.4);
-}
 
 .section-cta .tf-input:focus {
     border-color: var(--primary);
