@@ -35,7 +35,7 @@
     <canvas class="cursor-trail d-none d-xl-block" id="trail"></canvas>
 
     <!-- Scroll Top -->
-    <button id="goTop">
+    <button id="goTop" type="button" title="Volver arriba" aria-label="Volver arriba">
         <span class="border-progress"></span>
         <span class="ic-wrap">
             <span class="icon icon-arrow-caret-right"></span>
@@ -51,7 +51,7 @@
                     <div class="row">
                         <div class="col-6 col-md-2">
                             <a href="index.html" class="logo-site" title="Centre Suhevic">
-                                <img src="assets/logos/LogoSuhevic.svg" alt="Centre Suhevic" width="120" height="45" style="height:40px;width:auto;display:block;">
+                                <img class="logo-site-img" src="assets/logos/LogoSuhevic.svg" alt="Centre Suhevic" width="120" height="45">
                             </a>
                         </div>
                         <div class="col-7 d-none d-md-block">
@@ -219,16 +219,16 @@
                                 <form class="form-cta style-2">
                                     <div class="form-content">
                                         <fieldset class="tf-field">
-                                            <input class="tf-input" type="text" placeholder="" required="">
+                                            <input class="tf-input" type="text" name="search" placeholder="Buscar" title="Buscar" required>
                                             <label class="tf-lable">Your name <span class="text-primary">*</span></label>
                                         </fieldset>
                                         <fieldset class="tf-field">
-                                            <input class="tf-input" type="email" placeholder="" required="">
+                                            <input class="tf-input" type="email" name="email" placeholder="Email" title="Email" required>
                                             <label class="tf-lable">Your Email <span class="text-primary">*</span></label>
                                         </fieldset>
                                         <fieldset class="tf-field">
-                                            <textarea class="tf-input rounded-0" placeholder="" required=""></textarea>
-                                            <label class="tf-lable">Messenger</label>
+                                            <textarea class="tf-input rounded-0" name="message" placeholder="Mensaje" title="Mensaje" required></textarea>
+                                            <label class="tf-lable">Mensaje</label>
                                         </fieldset>
                                     </div>
                                     <div class="form-action">
@@ -254,7 +254,7 @@
                                         <input type="text" placeholder="Search" class="" name="search" tabindex="0" value="" aria-required="true"
                                             required="">
                                     </fieldset>
-                                    <button type="submit" class="link text-white">
+                                    <button type="submit" class="link text-white" title="Buscar" aria-label="Buscar">
                                         <i class="icon icon-search"></i>
                                     </button>
                                 </form>
@@ -386,13 +386,13 @@
             <div class="footer-bottom">
                 <div class="container">
                     <div class="img-agency">
-                        <img class="effectFade fadeZoom" loading="lazy" width="319" height="120" src="assets/logos/LogoSuhevic.svg" alt="Centre Suhevic" style="height:120px;width:auto;">
+                        <img class="effectFade fadeZoom footer-wordmark" loading="lazy" width="319" height="120" src="assets/logos/LogoSuhevic.svg" alt="Centre Suhevic">
                     </div>
                     <div class="bottom">
                         <p class="text-nocopy text-caption fw-medium letter-space--1">
                             © CENTRE SUHEVIC · NURIA SUHEVIC BELLONCH
                         </p>
-                        <a href="#" class="action-go-top tf-link-icon link text-caption fw-medium letter-space--1">
+                        <a href="#" class="action-go-top tf-link-icon link text-caption fw-medium letter-space--1" title="Volver arriba">
                             VOLVER ARRIBA
                             <i class="icon icon-arrow-long-right"></i>
                         </a>
@@ -409,7 +409,7 @@
                 <div class="offcanvas-content_wrapin">
                     <div class="canvas_head">
                         <a href="index.html" class="logo-site" title="Centre Suhevic">
-                            <img src="assets/logos/LogoSuhevic.svg" alt="Centre Suhevic" width="120" height="45" style="height:40px;width:auto;display:block;">
+                            <img class="logo-site-img" src="assets/logos/LogoSuhevic.svg" alt="Centre Suhevic" width="120" height="45">
                         </a>
                         <div class="btn-mobile-menu close-mb-menu text-caption link">
                             <i class="icon icon-close"></i>

@@ -178,6 +178,24 @@ body {
     background-color: var(--suhevic-cream);
 }
 
+/* Helpers para sustituir inline styles del logo */
+.preloader .site-name-logo {
+    height: 80px;
+    width: auto;
+}
+
+.tf-header .logo-site-img,
+.offcanvas-menu .logo-site-img {
+    height: 40px;
+    width: auto;
+    display: block;
+}
+
+.tf-footer .footer-wordmark {
+    height: 120px;
+    width: auto;
+}
+
 /* Footer wordmark "agency.png" es un PNG blanco — invisible en tema claro.
    Filtro para llevarlo a un tono cálido oscuro suave. */
 .tf-footer .img-agency img {
