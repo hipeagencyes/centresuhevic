@@ -144,6 +144,24 @@ body {
     padding-top: 60px;
 }
 
+/* Safari compat: expandir `inset: 0` por si la versión es antigua,
+   y asegurar que el vídeo de fondo rellena toda la sección */
+.section-hero-v1 .bg-video,
+.section-hero-v1 .bg-video > video,
+.section-hero-v1 .bg-video > img {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+.section-hero-v1 .bg-video > video,
+.section-hero-v1 .bg-video > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 20%;
+}
+
 /* Botón "VOLVER AL INICIO" del 404 — texto en una línea */
 .section-404 .tf-btn {
     padding-left: 40px;
@@ -262,6 +280,9 @@ body {
 
 /* Cómo trabajamos: invertir el solape para que S1 vaya delante y S3 detrás */
 @media (min-width: 1200px) {
+    .section-process .swiper-slide {
+        position: relative;
+    }
     .section-process .swiper-slide:nth-child(1) {
         z-index: 3;
     }
@@ -281,6 +302,14 @@ body {
     /* Títulos alineados a la derecha para que no queden tapados por la card anterior */
     .section-process .wg-process .title {
         text-align: right;
+    }
+    /* Safari bug fix: aspect-ratio + flex parent calcula altura mal.
+       Forzamos dimensiones explícitas para que Chrome y Safari rendericen igual. */
+    .section-process .wg-process {
+        width: 509px;
+        height: 509px;
+        max-width: 509px;
+        aspect-ratio: auto;
     }
 }
 
