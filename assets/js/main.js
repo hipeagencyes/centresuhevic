@@ -2,7 +2,7 @@
  * Go Top
  * Infinite Slide
  * Update Clock
- * Cursor Trail
+ * Click Ripple
  * Counter
  * Scroll Link
  * Setting Color
@@ -78,7 +78,7 @@
 
         startClocks(".clock");
     };
-    /* Cursor Trail
+    /* Click Ripple
     -------------------------------------------------------------------------*/
     var cursorTrail = () => {
         const canvas = document.getElementById("trail");
@@ -88,7 +88,6 @@
         canvas.width = w;
         canvas.height = h;
 
-        let points = [];
         let ripples = [];
 
         window.addEventListener("resize", () => {
@@ -96,11 +95,6 @@
             h = window.innerHeight;
             canvas.width = w;
             canvas.height = h;
-        });
-
-        window.addEventListener("mousemove", (e) => {
-            points.push({ x: e.clientX, y: e.clientY });
-            if (points.length > 10) points.shift();
         });
 
         window.addEventListener("click", (e) => {
@@ -114,22 +108,6 @@
 
         function draw() {
             ctx.clearRect(0, 0, w, h);
-
-            if (points.length > 1) {
-                ctx.beginPath();
-                ctx.moveTo(points[0].x, points[0].y);
-                for (let i = 1; i < points.length; i++) {
-                    ctx.lineTo(points[i].x, points[i].y);
-                }
-                let last = points[points.length - 1];
-                let grad = ctx.createLinearGradient(points[0].x, points[0].y, last.x, last.y);
-                grad.addColorStop(0, "rgba(183, 58, 55, 0)");
-                grad.addColorStop(1, "rgba(183, 58, 55, 1)");
-                ctx.strokeStyle = grad;
-                ctx.lineWidth = 3;
-                ctx.lineCap = "round";
-                ctx.stroke();
-            }
 
             ripples.forEach((r, i) => {
                 ctx.beginPath();

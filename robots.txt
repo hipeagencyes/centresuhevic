@@ -1,0 +1,38 @@
+# Centre Suhevic — https://www.centresuhevic.com
+
+User-agent: *
+Allow: /
+# Páginas sobrantes de la plantilla (no forman parte del sitio)
+Disallow: /blog-single.html
+Disallow: /blog-standard.html
+Disallow: /blog-three-columns.html
+Disallow: /blog-two-columns.html
+Disallow: /version-2.html
+Disallow: /_shot.html
+Disallow: /revision.html
+
+# Buscadores y asistentes de IA: acceso permitido explícitamente
+User-agent: Googlebot
+User-agent: Google-Extended
+User-agent: Bingbot
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: ClaudeBot
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Applebot
+User-agent: Applebot-Extended
+User-agent: CCBot
+Allow: /
+Disallow: /blog-single.html
+Disallow: /blog-standard.html
+Disallow: /blog-three-columns.html
+Disallow: /blog-two-columns.html
+Disallow: /version-2.html
+Disallow: /_shot.html
+Disallow: /revision.html
+
+Sitemap: https://www.centresuhevic.com/sitemap.xml

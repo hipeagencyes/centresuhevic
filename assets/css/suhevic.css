@@ -431,6 +431,21 @@ body {
     to { transform: scale(1.06); }
 }
 
+/* Fotos de servicios en su proporción 4:5 (424×530 y 212×265) */
+.section-service-2 .wg-service-2 .main-image .image,
+.section-service-2 .wg-service-2 .image-2 {
+    overflow: hidden;
+}
+
+.section-service-2 .wg-service-2 .main-image .image img,
+.section-service-2 .wg-service-2 .image-2 img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+}
+
 .section-service-2 .wg-service-2 {
     position: static !important;
     inset: auto !important;
@@ -538,6 +553,30 @@ body {
 .section-selected-work .text-display-2,
 .section-selected-work .btn-nav-swiper {
     color: var(--suhevic-warm-dark);
+}
+
+/* Nombres más contenidos para que "Neuropsicología" quepa en su columna */
+.section-selected-work .slick-nav .text-slide {
+    font-size: clamp(28px, 4vw, 60px);
+    line-height: 1.15;
+    white-space: nowrap;
+}
+
+/* Foto de especialidad: llena la columna derecha en 2:1, separada de los nombres */
+.section-selected-work .content-wrap-1 .col-right {
+    padding-left: clamp(0px, 3vw, 48px);
+}
+
+.section-selected-work .slick-for .image {
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+.section-selected-work .slick-for .image img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 2 / 1;
+    object-fit: cover;
 }
 
 /* Que la imagen de la montaña no compita con el contenido en tema claro */
@@ -685,3 +724,481 @@ body {
     color: #ffffff;
 }
 
+
+/* ──────────────────────────────────────────────────────────────
+   HERO — "NURIA SUHEVIC_" en dos líneas
+   Más largo que el "SUHEVIC_" original: bajamos el tamaño y el margen
+   de la lista superior para que el hero mantenga su altura.
+   ────────────────────────────────────────────────────────────── */
+
+.section-hero-v1 .suhevic-hero-name {
+    font-size: clamp(56px, 10.5vw, 176px);
+    line-height: 0.88;
+}
+.section-hero-v1 .suhevic-hero-name span {
+    display: block;
+}
+.section-hero-v1 .suhevic-hero-name .hero-name-first {
+    font-weight: 300;
+    letter-spacing: -0.04em;
+}
+.section-hero-v1 .suhevic-hero-name .hero-name-last span {
+    display: inline;
+}
+
+/* El hero empieza debajo del header (≈100px): restamos esa altura para que
+   el nombre y el botón entren en la primera pantalla y la animación de
+   entrada del nombre se dispare sin tener que hacer scroll */
+@media (min-width: 768px) and (max-width: 1599px) {
+    .section-hero-v1 {
+        min-height: calc(100vh - 100px);
+    }
+}
+
+/* Sin la lista de especialidades ni "Atendiendo en Gavà / Desde 2005":
+   ambas columnas se alinean abajo */
+.section-hero-v1 .col-left,
+.section-hero-v1 .col-right {
+    justify-content: flex-end;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   SOBRE NURIA — tabs "Sobre Nuria / Equipo"
+   ────────────────────────────────────────────────────────────── */
+
+.suhevic-tabs {
+    display: inline-flex;
+    gap: 4px;
+    padding: 4px;
+    margin-bottom: 32px;
+    border-radius: 999px;
+    background-color: rgba(71, 68, 65, 0.06);
+}
+.suhevic-tab {
+    border: 0;
+    background: transparent;
+    padding: 10px 20px;
+    border-radius: 999px;
+    color: rgba(71, 68, 65, 0.72);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+.suhevic-tab:hover {
+    color: var(--suhevic-accent);
+}
+.suhevic-tab.active {
+    background-color: var(--suhevic-accent);
+    color: #ffffff;
+}
+
+.suhevic-tab-pane {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.suhevic-tab-pane.active {
+    opacity: 1;
+    transform: none;
+}
+
+/* Slider de equipo */
+.team-slider {
+    margin-top: 8px;
+}
+.swiper-team {
+    overflow: hidden;
+}
+.swiper-team .swiper-slide {
+    display: flex;
+    height: auto;
+}
+.team-card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 1px solid rgba(71, 68, 65, 0.14);
+    border-radius: 16px;
+    background-color: #ffffff;
+    text-align: left;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+.team-card:hover,
+.team-card:focus-visible {
+    border-color: rgba(183, 58, 55, 0.4);
+}
+.team-card:focus-visible {
+    outline: 2px solid var(--suhevic-accent);
+    outline-offset: -2px;
+}
+.team-card_img img {
+    transition: transform 0.6s ease;
+}
+.team-card:hover .team-card_img img {
+    transform: scale(1.04);
+}
+.team-card_img,
+.team-drawer_img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 4 / 5;
+    background: linear-gradient(160deg, rgba(201, 196, 195, 0.55) 0%, rgba(183, 58, 55, 0.18) 100%);
+    overflow: hidden;
+}
+.team-card_img img,
+.team-drawer_img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.team-card_initials {
+    font-size: 56px;
+    font-weight: 300;
+    letter-spacing: -0.04em;
+    color: var(--suhevic-accent);
+}
+.team-card_info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 18px 18px 0;
+}
+.team-card_name {
+    font-size: 18px;
+    line-height: 1.25;
+    font-weight: 500;
+    color: var(--suhevic-warm-dark);
+}
+.team-card_role {
+    color: rgba(71, 68, 65, 0.72);
+}
+.team-card_more {
+    display: inline-flex;
+    margin-top: auto;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 18px 18px;
+    color: var(--suhevic-accent);
+    font-weight: 500;
+}
+.team-card_more .icon {
+    font-size: 10px;
+    transition: transform 0.3s ease;
+}
+.team-card:hover .team-card_more .icon {
+    transform: rotate(90deg);
+}
+
+/* Controles compartidos (equipo + experiencias) */
+.team-controls,
+.reviews-controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.team-controls {
+    margin-top: 24px;
+}
+.team-prev,
+.team-next,
+.reviews-prev,
+.reviews-next {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 1px solid rgba(71, 68, 65, 0.25);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--suhevic-warm-dark);
+    font-size: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.team-prev:hover,
+.team-next:hover,
+.reviews-prev:hover,
+.reviews-next:hover {
+    background-color: var(--suhevic-accent);
+    border-color: var(--suhevic-accent);
+    color: #ffffff;
+}
+.team-prev.swiper-button-disabled,
+.team-next.swiper-button-disabled {
+    opacity: 0.35;
+    pointer-events: none;
+}
+.team-pagination,
+.reviews-pagination {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.team-pagination {
+    width: auto !important;
+}
+.reviews-pagination {
+    justify-content: center;
+    margin-top: 40px;
+}
+.team-pagination .swiper-pagination-bullet,
+.reviews-pagination .swiper-pagination-bullet {
+    width: 8px;
+    height: 8px;
+    margin: 0 !important;
+    border-radius: 50%;
+    background-color: rgba(71, 68, 65, 0.25);
+    opacity: 1;
+    transition: width 0.3s ease, background-color 0.3s ease;
+}
+.team-pagination .swiper-pagination-bullet-active,
+.reviews-pagination .swiper-pagination-bullet-active {
+    width: 28px;
+    border-radius: 999px;
+    background-color: var(--suhevic-accent);
+}
+
+/* Drawer de perfil */
+.offcanvas.team-drawer {
+    width: min(480px, 100vw);
+    background-color: var(--suhevic-cream);
+    color: var(--suhevic-warm-dark);
+    box-shadow: -20px 0 60px rgba(0, 0, 0, 0.15);
+}
+.offcanvas-backdrop {
+    z-index: 2999;
+}
+.offcanvas-backdrop.show {
+    opacity: 0.4;
+}
+.team-drawer_close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 2;
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 50%;
+    background-color: rgba(250, 246, 241, 0.9);
+    color: var(--suhevic-warm-dark);
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+.team-drawer_close:hover {
+    background-color: var(--suhevic-accent);
+    color: #ffffff;
+}
+.team-drawer_body {
+    height: 100%;
+    overflow-y: auto;
+    padding-bottom: 40px;
+}
+.team-drawer_img {
+    aspect-ratio: 4 / 3;
+    margin-bottom: 32px;
+}
+.team-drawer_img img {
+    object-position: center 20%;
+}
+.team-drawer_img .team-card_initials {
+    font-size: 96px;
+}
+.team-drawer_role,
+.team-drawer_name,
+.team-drawer .br-line,
+.team-drawer_bio,
+.team-drawer_tags,
+.team-drawer_cta {
+    margin-left: 32px;
+    margin-right: 32px;
+}
+.team-drawer_role {
+    color: var(--suhevic-accent);
+    margin-bottom: 8px;
+}
+.team-drawer_name {
+    color: var(--suhevic-warm-dark);
+    margin-bottom: 24px;
+}
+.team-drawer .br-line {
+    width: auto;
+    height: 1px;
+    margin-bottom: 24px;
+}
+.team-drawer_bio {
+    margin-bottom: 20px;
+}
+.team-drawer_tags {
+    color: rgba(71, 68, 65, 0.72);
+    margin-bottom: 32px;
+}
+.team-drawer_cta {
+    background-color: var(--suhevic-accent);
+    border-color: var(--suhevic-accent);
+    color: #ffffff;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   EXPERIENCIAS — reseñas en slider
+   ────────────────────────────────────────────────────────────── */
+
+.section-reviews {
+    background-color: var(--suhevic-cream);
+    color: var(--suhevic-warm-dark);
+}
+.section-reviews .mini-title {
+    color: var(--suhevic-accent);
+    margin-bottom: 16px;
+}
+.section-reviews h2 {
+    color: var(--suhevic-warm-dark);
+}
+.reviews-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 48px;
+}
+.swiper-reviews {
+    overflow: hidden;
+}
+.swiper-reviews .swiper-slide {
+    height: auto;
+}
+.review-card {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    height: 100%;
+    padding: 36px;
+    border: 1px solid rgba(71, 68, 65, 0.14);
+    border-radius: 16px;
+    background-color: #ffffff;
+}
+.review-card_stars {
+    color: var(--suhevic-accent);
+    letter-spacing: 4px;
+    font-size: 16px;
+}
+.review-card_text {
+    flex: 1;
+    color: var(--suhevic-warm-dark);
+}
+.review-card_author {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+.review-card_avatar {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: rgba(183, 58, 55, 0.1);
+    color: var(--suhevic-accent);
+    font-weight: 500;
+}
+.review-card_name {
+    display: block;
+    font-weight: 500;
+}
+.review-card_ctx {
+    display: block;
+    color: rgba(71, 68, 65, 0.64);
+}
+@media (max-width: 767px) {
+    .reviews-controls {
+        display: none;
+    }
+    .review-card {
+        padding: 28px;
+    }
+}
+
+/* ──────────────────────────────────────────────────────────────
+   ETIQUETA DE SECCIÓN (Especialidades, Experiencias)
+   Más grande y en granate con una raya delante, para que se lea
+   bien sin competir con el titular o el slider que tiene debajo.
+   ────────────────────────────────────────────────────────────── */
+
+.suhevic-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 15px;
+    line-height: 1.2;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--suhevic-accent) !important;
+    opacity: 1 !important;
+}
+.suhevic-eyebrow::before {
+    content: "";
+    width: 40px;
+    height: 2px;
+    flex-shrink: 0;
+    background-color: currentColor;
+}
+@media (min-width: 1200px) {
+    .suhevic-eyebrow {
+        font-size: 16px;
+    }
+}
+
+/* ──────────────────────────────────────────────────────────────
+   ESQUINAS REDONDEADAS UNIFICADAS
+   Mismo radio que las fotos de Especialidades (12px) en el resto de
+   fotos y tarjetas, para que todo el sitio tenga el mismo estilo.
+   ────────────────────────────────────────────────────────────── */
+
+/* Otros servicios: foto principal y foto de detalle, con sombra suave */
+.section-service-2 .wg-service-2 .main-image .image,
+.section-service-2 .wg-service-2 .image-2 {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 18px 40px rgba(40, 12, 11, 0.28), 0 4px 12px rgba(40, 12, 11, 0.16);
+}
+.section-service-2 .wg-service-2 .image-simu {
+    border-radius: 12px;
+}
+
+/* Sobre Nuria: vídeo */
+.section-about-me .davies-video {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* Sobre Nuria: el logo del círculo queda fijo (sin girar) */
+.section-about-me .col-left .badget img {
+    animation: none;
+}
+
+/* Cómo trabajamos: tarjetas */
+.section-process .wg-process {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* Flechas ANT/SIG de especialidades en la columna derecha (antes ocupada por "+20") */
+.section-selected-work .content-wrap-2 .col-right .group-btn-slider {
+    margin-top: 0;
+}

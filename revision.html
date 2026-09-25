@@ -1,0 +1,1687 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Revisión de contenidos · Centre Suhevic</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/svg+xml" href="assets/logos/logosquared.svg">
+    <link rel="stylesheet" href="assets/fonts/fonts.css">
+    <style>
+        :root {
+            --accent: #b73a37;
+            --accent-soft: rgba(183, 58, 55, 0.08);
+            --ink: #2f2d2b;
+            --ink-2: #474441;
+            --muted: #7a7571;
+            --line: rgba(71, 68, 65, 0.14);
+            --cream: #faf6f1;
+            --card: #ffffff;
+            --ok: #2e7d4f;
+            --ok-soft: rgba(46, 125, 79, 0.09);
+            --radius: 14px;
+        }
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+        body {
+            margin: 0;
+            font-family: "Figtree", system-ui, -apple-system, sans-serif;
+            color: var(--ink);
+            background: var(--cream);
+            font-size: 16px;
+            line-height: 1.55;
+            -webkit-font-smoothing: antialiased;
+        }
+        img, video { max-width: 100%; display: block; }
+        .wrap { max-width: 980px; margin: 0 auto; padding: 0 16px; }
+
+        /* Barra superior con progreso */
+        .topbar {
+            position: sticky; top: 0; z-index: 10;
+            background: rgba(250, 246, 241, 0.92);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--line);
+        }
+        .topbar .wrap { display: flex; align-items: center; gap: 16px; height: 64px; }
+        .topbar img { height: 30px; width: auto; }
+        .progress { flex: 1; display: flex; align-items: center; gap: 12px; justify-content: flex-end; }
+        .progress-bar { width: min(220px, 40vw); height: 6px; background: var(--line); border-radius: 99px; overflow: hidden; }
+        .progress-bar span { display: block; height: 100%; width: 0; background: var(--accent); transition: width .3s ease; }
+        .progress-label { font-size: 13px; color: var(--ink-2); white-space: nowrap; font-variant-numeric: tabular-nums; }
+        .btn-top {
+            font: inherit; font-size: 13px; font-weight: 600; letter-spacing: .04em;
+            border: 0; border-radius: 99px; padding: 9px 16px; cursor: pointer;
+            background: var(--accent); color: #fff; white-space: nowrap; text-decoration: none;
+        }
+
+        /* Portada */
+        .hero { padding: 56px 0 24px; }
+        .eyebrow {
+            display: inline-flex; align-items: center; gap: 12px;
+            font-size: 13px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+        }
+        .eyebrow::before { content: ""; width: 32px; height: 2px; background: currentColor; }
+        h1 { font-size: clamp(32px, 6vw, 52px); line-height: 1.05; font-weight: 500; letter-spacing: -0.03em; margin: 16px 0; }
+        .lead { font-size: 18px; color: var(--ink-2); max-width: 680px; margin: 0; }
+        .how { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 32px 0 0; padding: 0; list-style: none; counter-reset: how; }
+        .how li { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; font-size: 15px; color: var(--ink-2); counter-increment: how; }
+        .how li::before { content: counter(how); display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font-weight: 700; font-size: 14px; margin-bottom: 10px; }
+        .how b { color: var(--ink); }
+
+        /* Índice */
+        .toc { display: flex; flex-wrap: wrap; gap: 8px; margin: 32px 0 8px; padding: 0; list-style: none; }
+        .toc a {
+            display: inline-flex; align-items: center; gap: 8px;
+            font-size: 14px; color: var(--ink-2); text-decoration: none;
+            background: var(--card); border: 1px solid var(--line); border-radius: 99px; padding: 6px 12px;
+        }
+        .toc a:hover { border-color: var(--accent); color: var(--accent); }
+        .toc .count { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+        .toc a.done { border-color: rgba(46,125,79,.4); }
+        .toc a.done .count { color: var(--ok); }
+
+        /* Secciones */
+        .section { padding: 40px 0 8px; }
+        .section-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 6px; }
+        .section-num { font-size: 14px; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
+        h2 { font-size: clamp(24px, 4vw, 32px); font-weight: 500; letter-spacing: -0.02em; margin: 0; line-height: 1.15; }
+        .section-intro { color: var(--muted); margin: 0 0 20px; max-width: 700px; }
+
+        /* Tarjeta de elemento */
+        .item {
+            background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+            margin-bottom: 14px; overflow: hidden; transition: border-color .2s ease;
+        }
+        .item[data-status="ok"] { border-color: rgba(46,125,79,.45); }
+        .item[data-status="change"] { border-color: rgba(183,58,55,.5); }
+        .item-head { display: flex; align-items: center; gap: 12px; padding: 16px 20px 0; }
+        .code {
+            font-size: 12px; font-weight: 700; color: var(--accent); background: var(--accent-soft);
+            border-radius: 6px; padding: 2px 8px; font-variant-numeric: tabular-nums; flex-shrink: 0;
+        }
+        .item-title { font-size: 17px; font-weight: 600; margin: 0; }
+        .item-body { padding: 14px 20px 18px; display: grid; gap: 14px; }
+        .field-label { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+        .field-text { white-space: pre-line; color: var(--ink); }
+        .field-list { margin: 0; padding-left: 18px; }
+        .field-list li { margin: 2px 0; }
+        .field-media { border-radius: 10px; overflow: hidden; background: #eee8e2; max-width: 320px; }
+        .field-media img, .field-media video { width: 100%; height: auto; }
+        .field-media.logo { background: var(--cream); padding: 16px; max-width: 220px; }
+        .note { font-size: 14px; color: #8a5a1f; background: #fbf1e3; border-radius: 8px; padding: 8px 12px; margin-top: 8px; }
+        .media-link { font-size: 13px; color: var(--accent); }
+
+        .google { border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; max-width: 620px; font-family: Arial, sans-serif; }
+        .google .g-url { font-size: 13px; color: #4d5156; }
+        .google .g-title { font-size: 20px; color: #1a0dab; line-height: 1.3; margin: 4px 0; }
+        .google .g-desc { font-size: 14px; color: #4d5156; }
+
+        /* Decisión */
+        .decision { display: flex; flex-wrap: wrap; gap: 10px; padding: 14px 20px; border-top: 1px solid var(--line); background: #fcfaf7; }
+        .choice { position: relative; }
+        .choice input { position: absolute; opacity: 0; pointer-events: none; }
+        .choice span {
+            display: inline-flex; align-items: center; gap: 8px; cursor: pointer; user-select: none;
+            border: 1.5px solid var(--line); border-radius: 99px; padding: 8px 16px; font-size: 15px; font-weight: 600; color: var(--ink-2);
+            background: #fff; transition: all .15s ease;
+        }
+        .choice span::before {
+            content: ""; width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid currentColor; opacity: .5; flex-shrink: 0;
+        }
+        .choice input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
+        .choice.ok input:checked + span { border-color: var(--ok); background: var(--ok-soft); color: var(--ok); }
+        .choice.change input:checked + span { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+        .choice input:checked + span::before { opacity: 1; background: currentColor; box-shadow: inset 0 0 0 3px #fff; }
+
+        .changes { display: none; padding: 4px 20px 20px; background: #fcfaf7; gap: 14px; }
+        .item[data-status="change"] .changes { display: grid; }
+        .changes-hint { font-size: 14px; color: var(--muted); margin: 0; }
+        label.input-label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 6px; color: var(--ink-2); }
+        textarea, input[type="text"] {
+            width: 100%; font: inherit; font-size: 15px; color: var(--ink);
+            border: 1.5px solid var(--line); border-radius: 10px; padding: 10px 12px; background: #fff; resize: vertical;
+        }
+        textarea:focus, input[type="text"]:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+        .question-body { padding: 14px 20px 20px; }
+        .question-body p { margin: 0 0 10px; color: var(--ink-2); }
+
+        .section-comment { margin: 6px 0 0; }
+        .section-comment summary { cursor: pointer; font-size: 15px; font-weight: 600; color: var(--ink-2); padding: 8px 0; }
+        .section-comment summary:hover { color: var(--accent); }
+        .section-comment[open] summary { margin-bottom: 8px; }
+
+        /* Envío */
+        .send { margin: 48px 0 80px; background: var(--ink-2); color: #fff; border-radius: 20px; padding: 32px; }
+        .send h2 { color: #fff; }
+        .send p { color: rgba(255,255,255,.75); }
+        .send .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+        .send label.input-label { color: rgba(255,255,255,.85); }
+        .send input[type="text"] { border-color: transparent; }
+        .actions { display: flex; flex-wrap: wrap; gap: 10px; }
+        .btn {
+            font: inherit; font-size: 15px; font-weight: 600; border-radius: 99px; padding: 12px 20px; cursor: pointer;
+            border: 1.5px solid rgba(255,255,255,.35); background: transparent; color: #fff;
+        }
+        .btn.primary { background: var(--accent); border-color: var(--accent); }
+        .btn:hover { border-color: #fff; }
+        .summary-stats { display: flex; flex-wrap: wrap; gap: 18px; font-size: 15px; margin-top: 8px; }
+        .summary-stats b { font-size: 22px; display: block; color: #fff; font-variant-numeric: tabular-nums; }
+        .missing { font-size: 14px; color: #ffd6c9; margin-top: 12px; }
+        .toast {
+            position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); opacity: 0;
+            background: var(--ink); color: #fff; padding: 10px 18px; border-radius: 99px; font-size: 14px;
+            transition: all .25s ease; pointer-events: none; z-index: 20;
+        }
+        .toast.show { opacity: 1; transform: translate(-50%, 0); }
+        .saved { font-size: 12px; color: var(--muted); white-space: nowrap; }
+        .saved.cloud { color: var(--ok); }
+        body.loading #sections, body.loading .send { opacity: .45; pointer-events: none; }
+        .saved.error { color: var(--accent); }
+        .web-link { font-size: 14px; font-weight: 600; color: var(--ink-2); text-decoration: none; white-space: nowrap; }
+        .web-link:hover { color: var(--accent); }
+        .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+        .btn-outline {
+            display: inline-flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 600; text-decoration: none;
+            color: var(--accent); border: 1.5px solid var(--accent); border-radius: 99px; padding: 10px 18px; background: #fff;
+        }
+        .btn-outline:hover { background: var(--accent); color: #fff; }
+        .section-link { margin-left: auto; font-size: 14px; font-weight: 600; color: var(--accent); text-decoration: none; white-space: nowrap; }
+        .section-link:hover { text-decoration: underline; }
+        .history { margin: 16px 0 0; padding: 0; list-style: none; font-size: 14px; color: rgba(255,255,255,.75); }
+        .history li { padding: 4px 0; }
+
+        @media (max-width: 720px) {
+            .how { grid-template-columns: 1fr; }
+            .send { padding: 24px 18px; }
+            .send .row { grid-template-columns: 1fr; }
+            .topbar .saved, .progress-bar, .topbar .web-link { display: none; }
+            .section-head { flex-wrap: wrap; }
+            .section-link { margin-left: 0; width: 100%; }
+            .item-head, .item-body, .decision, .changes, .question-body { padding-left: 16px; padding-right: 16px; }
+        }
+        @media print {
+            .topbar, .toc, .send .actions, .how { display: none !important; }
+            body { background: #fff; }
+            .item { break-inside: avoid; }
+            .changes { display: grid !important; }
+            .item:not([data-status="change"]) .changes { display: none !important; }
+            .section-comment:not([open]) { display: none; }
+            video { display: none; }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="topbar">
+        <div class="wrap">
+            <img src="assets/logos/LogoSuhevic.svg" alt="Centre Suhevic" width="80" height="30">
+            <div class="progress">
+                <a class="web-link" href="index.html" target="_blank" rel="noopener">Ver la web ↗</a>
+                <span class="saved" id="saved">Se guarda automáticamente</span>
+                <span class="progress-label" id="progressLabel">0 de 0</span>
+                <div class="progress-bar" aria-hidden="true"><span id="progressBar"></span></div>
+                <a class="btn-top" href="#enviar">Enviar</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="wrap">
+        <section class="hero">
+            <span class="eyebrow">Revisión de contenidos</span>
+            <h1>Nueva web del Centre Suhevic</h1>
+            <p class="lead">Aquí tienes todos los textos, fotos y vídeos de la web, ordenados por secciones. Revisa cada elemento y dinos si está bien o qué quieres cambiar.</p>
+            <ol class="how">
+                <li>En cada elemento marca <b>«Está bien»</b> o <b>«Quiero cambiarlo»</b>.</li>
+                <li>Si quieres cambiarlo, escribe el <b>texto nuevo</b> o describe la <b>foto nueva</b>. Cada elemento tiene un código (p. ej. <b>3.2</b>) por si nos envías fotos.</li>
+                <li>Todo se <b>guarda solo</b>: puedes hacerlo por partes. Cuando quieras, pulsa <b>«Enviar lo revisado»</b> al final para avisarnos.</li>
+            </ol>
+            <div class="hero-actions">
+                <a class="btn-outline" href="index.html" target="_blank" rel="noopener">Abrir la web en otra pestaña ↗</a>
+            </div>
+            <ul class="toc" id="toc"></ul>
+        </section>
+
+        <div id="sections"></div>
+
+        <section class="send" id="enviar">
+            <span class="eyebrow" style="color:#ffb3a7">Último paso</span>
+            <h2 style="margin-top:12px">Enviar la revisión</h2>
+            <div class="summary-stats" id="stats"></div>
+            <p class="missing" id="missing" hidden></p>
+            <div class="row">
+                <div>
+                    <label class="input-label" for="reviewer">Tu nombre</label>
+                    <input type="text" id="reviewer" autocomplete="name">
+                </div>
+                <div>
+                    <label class="input-label" for="photosNote">¿Nos envías fotos aparte?</label>
+                    <input type="text" id="photosNote" placeholder="Ej.: sí, 4 fotos por WeTransfer con los códigos 3.1, 3.2…">
+                </div>
+            </div>
+            <p id="sendHelp">El botón abre tu programa de correo con todas las respuestas ya escritas. Si prefieres, puedes copiarlas o guardarlas en PDF.</p>
+            <div class="actions">
+                <button type="button" class="btn primary" id="btnMail">Enviar por email</button>
+                <button type="button" class="btn" id="btnCopy">Copiar respuestas</button>
+                <button type="button" class="btn" id="btnPrint">Guardar como PDF</button>
+            </div>
+            <ul class="history" id="history"></ul>
+        </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script>
+        // Destinatario del email con las respuestas (déjalo vacío para que el cliente lo escriba)
+        const REVIEW_EMAIL = "";
+        const DATA = [
+ {
+  "id": "cabecera",
+  "title": "Cabecera y menú",
+  "intro": "La barra superior, visible en toda la página.",
+  "items": [
+   {
+    "label": "Logotipo",
+    "fields": [
+     {
+      "label": "Logo",
+      "type": "image",
+      "value": "assets/logos/LogoSuhevic.svg"
+     }
+    ],
+    "id": "1.1"
+   },
+   {
+    "label": "Menú de navegación",
+    "fields": [
+     {
+      "label": "Apartados del menú",
+      "type": "list",
+      "value": [
+       "Especialidades",
+       "Servicios",
+       "Sobre Nuria",
+       "Contacto"
+      ]
+     }
+    ],
+    "id": "1.2"
+   },
+   {
+    "label": "Email en la cabecera",
+    "fields": [
+     {
+      "label": "Email",
+      "type": "text",
+      "value": "secretaria@centresuhevic.com"
+     }
+    ],
+    "id": "1.3"
+   }
+  ],
+  "n": 1,
+  "anchor": ""
+ },
+ {
+  "id": "portada",
+  "title": "Portada",
+  "intro": "Lo primero que se ve al entrar en la web.",
+  "items": [
+   {
+    "label": "Vídeo de fondo",
+    "fields": [
+     {
+      "label": "Vídeo",
+      "type": "video",
+      "value": "assets/images/video/Hero.mp4",
+      "poster": "assets/images/home/Hero.jpg"
+     }
+    ],
+    "id": "2.1"
+   },
+   {
+    "label": "Título grande",
+    "fields": [
+     {
+      "label": "Título",
+      "type": "text",
+      "value": "NURIA SUHEVIC"
+     }
+    ],
+    "id": "2.2"
+   },
+   {
+    "label": "Texto de presentación",
+    "fields": [
+     {
+      "label": "Texto",
+      "type": "text",
+      "value": "Centro autorizado dirigido por Nuria Suhevic Bellonch. Más de 20 años acompañando a niños, adolescentes, adultos y familias en su proceso terapéutico, con un enfoque multidisciplinar y cercano."
+     }
+    ],
+    "id": "2.3"
+   },
+   {
+    "label": "Botón",
+    "fields": [
+     {
+      "label": "Texto del botón",
+      "type": "text",
+      "value": "CONTACTO"
+     },
+     {
+      "label": "Al pulsarlo",
+      "type": "text",
+      "value": "Baja hasta el formulario de contacto"
+     }
+    ],
+    "id": "2.4"
+   }
+  ],
+  "n": 2,
+  "anchor": ""
+ },
+ {
+  "id": "especialidades",
+  "title": "Especialidades",
+  "intro": "Carrusel con las especialidades del centro. Cada una tiene un nombre, una foto y unas etiquetas.",
+  "items": [
+   {
+    "label": "Especialidad: Clínica",
+    "fields": [
+     {
+      "label": "Nombre",
+      "type": "text",
+      "value": "Clínica"
+     },
+     {
+      "label": "Foto",
+      "type": "image",
+      "value": "assets/images/centre/psicologia-clinica.jpg",
+      "note": "Foto provisional de baja resolución: si os gusta, necesitamos la original en alta calidad."
+     },
+     {
+      "label": "Etiquetas",
+      "type": "list",
+      "value": [
+       "Infanto-juvenil",
+       "Adultos",
+       "Familias"
+      ]
+     }
+    ],
+    "id": "3.1"
+   },
+   {
+    "label": "Especialidad: Psicopedagogía",
+    "fields": [
+     {
+      "label": "Nombre",
+      "type": "text",
+      "value": "Psicopedagogía"
+     },
+     {
+      "label": "Foto",
+      "type": "image",
+      "value": "assets/images/centre/psicopedagogia.jpg",
+      "note": "Foto provisional de baja resolución: si os gusta, necesitamos la original en alta calidad."
+     },
+     {
+      "label": "Etiquetas",
+      "type": "list",
+      "value": [
+       "Aprendizaje",
+       "Reeducación"
+      ]
+     }
+    ],
+    "id": "3.2"
+   },
+   {
+    "label": "Especialidad: Logopedia",
+    "fields": [
+     {
+      "label": "Nombre",
+      "type": "text",
+      "value": "Logopedia"
+     },
+     {
+      "label": "Foto",
+      "type": "image",
+      "value": "assets/images/centre/logopedia.jpg",
+      "note": "Foto provisional de baja resolución: si os gusta, necesitamos la original en alta calidad."
+     },
+     {
+      "label": "Etiquetas",
+      "type": "list",
+      "value": [
+       "Lenguaje",
+       "Habla · Voz"
+      ]
+     }
+    ],
+    "id": "3.3"
+   },
+   {
+    "label": "Especialidad: Forense",
+    "fields": [
+     {
+      "label": "Nombre",
+      "type": "text",
+      "value": "Forense"
+     },
+     {
+      "label": "Foto",
+      "type": "image",
+      "value": "assets/images/centre/psicologia-forense.jpg",
+      "note": "Foto provisional de baja resolución: si os gusta, necesitamos la original en alta calidad."
+     },
+     {
+      "label": "Etiquetas",
+      "type": "list",
+      "value": [
+       "Peritajes",
+       "Asesoramiento"
+      ]
+     }
+    ],
+    "id": "3.4"
+   },
+   {
+    "label": "Especialidad: Neuropsicología",
+    "fields": [
+     {
+      "label": "Nombre",
+      "type": "text",
+      "value": "Neuropsicología"
+     },
+     {
+      "label": "Foto",
+      "type": "image",
+      "value": "assets/images/centre/neuropsicologia.jpg",
+      "note": "Foto provisional de baja resolución: si os gusta, necesitamos la original en alta calidad."
+     },
+     {
+      "label": "Etiquetas",
+      "type": "list",
+      "value": [
+       "Estimulación cognitiva",
+       "Daño cerebral"
+      ]
+     }
+    ],
+    "id": "3.5"
+   },
+   {
+    "label": "Cifra destacada",
+    "fields": [
+     {
+      "label": "Cifra",
+      "type": "text",
+      "value": "+20"
+     },
+     {
+      "label": "Significado",
+      "type": "text",
+      "value": "Años de experiencia"
+     }
+    ],
+    "id": "3.6"
+   }
+  ],
+  "n": 3,
+  "anchor": "#especialidadesScroll"
+ },
+ {
+  "id": "servicios",
+  "title": "Otros servicios",
+  "intro": "Tarjetas con los servicios complementarios.",
+  "items": [
+   {
+    "label": "Servicio: Terapia online",
+    "fields": [
+     {
+      "label": "Foto principal",
+      "type": "image",
+      "value": "assets/images/centre/terapia-online.jpg",
+      "note": "Foto provisional de baja resolución: si os gusta, necesitamos la original en alta calidad."
+     },
+     {
+      "label": "Foto secundaria",
+      "type": "image",
+      "value": "assets/images/centre/terapia-online-detalle.jpg",
+      "note": "Foto provisional de baja resolución: si os gusta, necesitamos la original en alta calidad."
+     },
+     {
+      "label": "Título",
+      "type": "text",
+      "value": "Terapia online"
+     },
+     {
+      "label": "Descripción",
+      "type": "text",
+      "value": "Sesiones a distancia con la misma calidez y rigor que en consulta. Aplicable a orientación a padres, terapia con adolescentes y casos de reeducación o logopedia que lo permitan."
+     },
+     {
+      "label": "Puntos destacados",
+      "type": "list",
+      "value": [
+       "Adolescentes y adultos",
+       "Orientación a padres",
+       "Reeducación y logopedia",
+       "Plataformas seguras",
+       "Horarios flexibles"
+      ]
+     },
+     {
+      "label": "Botón",
+      "type": "text",
+      "value": "PEDIR INFORMACIÓN"
+     }
+    ],
+    "id": "4.1"
+   },
+   {
+    "label": "Servicio: Terapia de grupos",
+    "fields": [
+     {
+      "label": "Foto principal",
+      "type": "image",
+      "value": "assets/images/centre/terapia-grupos.jpg",
+      "note": "Foto provisional de baja resolución: si os gusta, necesitamos la original en alta calidad."
+     },
+     {
+      "label": "Foto secundaria",
+      "type": "image",
+      "value": "assets/images/centre/terapia-grupos-detalle.jpg",
+      "note": "Foto provisional de baja resolución: si os gusta, necesitamos la original en alta calidad."
+     },
+     {
+      "label": "Título",
+      "type": "text",
+      "value": "Terapia de grupos"
+     },
+     {
+      "label": "Descripción",
+      "type": "text",
+      "value": "Espacios grupales reducidos donde compartir herramientas, contraste y aprendizaje. Diseñados con objetivos concretos para niños, adolescentes y adultos."
+     },
+     {
+      "label": "Puntos destacados",
+      "type": "list",
+      "value": [
+       "Habilidades sociales (TEA · TDAH)",
+       "Autoestima y dependencia emocional",
+       "Gestión del estrés",
+       "Resolución de conflictos",
+       "Técnicas de estudio y comprensión lectora"
+      ]
+     },
+     {
+      "label": "Botón",
+      "type": "text",
+      "value": "PEDIR INFORMACIÓN"
+     }
+    ],
+    "id": "4.2"
+   },
+   {
+    "label": "Servicio: Orientación a padres",
+    "fields": [
+     {
+      "label": "Foto principal",
+      "type": "image",
+      "value": "assets/images/centre/orientacion-padres.jpg",
+      "note": "Foto provisional de baja resolución: si os gusta, necesitamos la original en alta calidad."
+     },
+     {
+      "label": "Título",
+      "type": "text",
+      "value": "Orientación a padres"
+     },
+     {
+      "label": "Descripción",
+      "type": "text",
+      "value": "Un espacio de encuentro, análisis y reflexión entre un experto en psicología y el padre, madre o tutor/a del menor para acompañar mejor su proceso."
+     },
+     {
+      "label": "Puntos destacados",
+      "type": "list",
+      "value": [
+       "Pautas concretas",
+       "Comunicación familiar",
+       "Manejo de conducta",
+       "Apoyo en diagnósticos",
+       "Coordinación con escuela"
+      ]
+     },
+     {
+      "label": "Botón",
+      "type": "text",
+      "value": "PEDIR INFORMACIÓN"
+     }
+    ],
+    "id": "4.3"
+   }
+  ],
+  "n": 4,
+  "anchor": "#serviciosScroll"
+ },
+ {
+  "id": "proceso",
+  "title": "Cómo trabajamos",
+  "intro": "Tres tarjetas que explican el proceso con el paciente.",
+  "items": [
+   {
+    "label": "Paso 1: Primera visita para escucharte",
+    "fields": [
+     {
+      "label": "Título",
+      "type": "text",
+      "value": "Primera visita para escucharte"
+     },
+     {
+      "label": "Texto",
+      "type": "text",
+      "value": "Una sesión inicial para entender qué ocurre, qué buscas y quién eres. Sin compromiso, en un espacio seguro y confidencial."
+     }
+    ],
+    "id": "5.1"
+   },
+   {
+    "label": "Paso 2: Plan terapéutico a tu medida",
+    "fields": [
+     {
+      "label": "Título",
+      "type": "text",
+      "value": "Plan terapéutico a tu medida"
+     },
+     {
+      "label": "Texto",
+      "type": "text",
+      "value": "Trabajamos en equipo para definir objetivos, ritmo y enfoque. Cada caso es único: clínica, psicopedagogía o logopedia, y combinaciones cuando hace falta."
+     }
+    ],
+    "id": "5.2"
+   },
+   {
+    "label": "Paso 3: Acompañamiento y seguimiento",
+    "fields": [
+     {
+      "label": "Título",
+      "type": "text",
+      "value": "Acompañamiento y seguimiento"
+     },
+     {
+      "label": "Texto",
+      "type": "text",
+      "value": "Sesiones regulares con revisión continua. Coordinamos con familia, escuela u otros profesionales si el proceso lo requiere, hasta cerrar el cambio."
+     }
+    ],
+    "id": "5.3"
+   }
+  ],
+  "n": 5,
+  "anchor": "#procesoScroll"
+ },
+ {
+  "id": "nuria",
+  "title": "Sobre Nuria",
+  "intro": "Presentación de la directora (pestaña «Sobre Nuria»).",
+  "items": [
+   {
+    "label": "Vídeo de Nuria",
+    "fields": [
+     {
+      "label": "Vídeo",
+      "type": "video",
+      "value": "assets/images/video/NURIA_CLOSE.mp4",
+      "poster": null
+     }
+    ],
+    "id": "6.1"
+   },
+   {
+    "label": "Foto de fondo de la sección",
+    "fields": [
+     {
+      "label": "Foto",
+      "type": "image",
+      "value": "assets/images/centre/consulta.jpg",
+      "note": "Foto provisional de baja resolución: si os gusta, necesitamos la original en alta calidad."
+     }
+    ],
+    "id": "6.2"
+   },
+   {
+    "label": "Texto de presentación",
+    "fields": [
+     {
+      "label": "Texto",
+      "type": "text",
+      "value": "Soy Nuria Suhevic Bellonch. Creé el Centre Suhevic tras años en distintos centros y aulas universitarias, convencida de que el trabajo en equipo y multidisciplinar da los mejores resultados a las personas que acompañamos."
+     }
+    ],
+    "id": "6.3"
+   },
+   {
+    "label": "Trayectoria",
+    "fields": [
+     {
+      "label": "Líneas de la trayectoria",
+      "type": "list",
+      "value": [
+       "Directora Centre Suhevic · Gavà — desde 2005",
+       "Terapia familiar y de pareja — especialización",
+       "Trauma y trauma complejo (EMDR) — especialización",
+       "Psicología jurídica y forense — especialización",
+       "Más de 20 años en consulta — +20"
+      ]
+     }
+    ],
+    "id": "6.4"
+   }
+  ],
+  "n": 6,
+  "anchor": "#sobreScroll"
+ },
+ {
+  "id": "equipo",
+  "title": "Equipo",
+  "intro": "Pestaña «Equipo»: tarjetas con foto. Al pulsar una se abre la ficha completa. Si falta o sobra alguien, indícalo en los comentarios de la sección.",
+  "items": [
+   {
+    "label": "Frase de introducción",
+    "fields": [
+     {
+      "label": "Texto",
+      "type": "text",
+      "value": "Un equipo multidisciplinar que trabaja de forma coordinada para acompañar cada caso."
+     }
+    ],
+    "id": "7.1"
+   },
+   {
+    "label": "Nuria Suhevic Bellonch",
+    "fields": [
+     {
+      "label": "Foto",
+      "type": "image",
+      "value": "assets/images/equipo/nuria-suhevic.jpg"
+     },
+     {
+      "label": "Nombre",
+      "type": "text",
+      "value": "Nuria Suhevic Bellonch"
+     },
+     {
+      "label": "Cargo",
+      "type": "text",
+      "value": "Directora · Psicóloga General Sanitaria"
+     },
+     {
+      "label": "Etiquetas",
+      "type": "text",
+      "value": "Terapia familiar · Pareja · EMDR · Forense"
+     },
+     {
+      "label": "Biografía",
+      "type": "text",
+      "value": "Licenciada en Psicología (Blanquerna, Universidad Ramon Llull) y Psicóloga General Sanitaria acreditada por la Generalitat de Catalunya. Máster en Terapia Familiar (Centro de Terapia Familiar de Barcelona) y en Psicología Forense (ISEP), y postgrados en Terapia de Pareja (Universidad de Vic) y Psicofarmacología Clínica (Hospital Clínic). Formación completa en EMDR. Más de 15 años como responsable del gabinete de psicología y psicopedagogía del Colegio Sagrat Cor y el INS Bruguers de Gavà, y amplia experiencia como formadora. Acreditada por la FEATF y la FEAP."
+     }
+    ],
+    "id": "7.2"
+   },
+   {
+    "label": "Mª Carmen Toledo Calderón",
+    "fields": [
+     {
+      "label": "Foto",
+      "type": "image",
+      "value": "assets/images/equipo/mcarmen-toledo.jpg"
+     },
+     {
+      "label": "Nombre",
+      "type": "text",
+      "value": "Mª Carmen Toledo Calderón"
+     },
+     {
+      "label": "Cargo",
+      "type": "text",
+      "value": "Psicóloga General Sanitaria · Infanto-juvenil"
+     },
+     {
+      "label": "Etiquetas",
+      "type": "text",
+      "value": "Infancia · Adolescencia · Altas capacidades · Logopedia"
+     },
+     {
+      "label": "Biografía",
+      "type": "text",
+      "value": "Licenciada en Psicología por la Universidad de Barcelona y Psicóloga General Sanitaria acreditada por la Generalitat de Catalunya. Máster en Psicología Clínica Infanto-Juvenil (ISEP) y Máster en Logopedia Clínica y Escolar (ITEAP). Formación en trastornos de ansiedad, TDAH, dislexia y dificultades de lectoescritura, maltrato infantil, dibujo infantil como herramienta terapéutica, altas capacidades (Fundación ADANA) y duelo gestacional y neonatal (COPC)."
+     }
+    ],
+    "id": "7.3"
+   },
+   {
+    "label": "Montserrat Jové i Boncompte",
+    "fields": [
+     {
+      "label": "Foto",
+      "type": "image",
+      "value": "assets/images/equipo/montserrat-jove.jpg"
+     },
+     {
+      "label": "Nombre",
+      "type": "text",
+      "value": "Montserrat Jové i Boncompte"
+     },
+     {
+      "label": "Cargo",
+      "type": "text",
+      "value": "Logopeda · Psicóloga"
+     },
+     {
+      "label": "Etiquetas",
+      "type": "text",
+      "value": "Lenguaje · Habla · Voz · Deglución · Dislexia"
+     },
+     {
+      "label": "Biografía",
+      "type": "text",
+      "value": "Logopeda colegiada nº 692 desde 2001 en el Col·legi de Logopedes de Catalunya y licenciada en Psicología por la Universidad de Barcelona (1997). Especializada en evaluación e intervención del lenguaje en niños y adultos: alteraciones articulatorias, fluidez verbal, disfonías, deglución atípica y terapia miofuncional, dislexia y disgrafía, TEA y rehabilitación del lenguaje tras ictus. Coordinadora de prácticas de Logopedia en Blanquerna (2007-2012)."
+     }
+    ],
+    "id": "7.4"
+   },
+   {
+    "label": "Paula Hervás Cabrera",
+    "fields": [
+     {
+      "label": "Foto",
+      "type": "image",
+      "value": "assets/images/equipo/paula-hervas.jpg"
+     },
+     {
+      "label": "Nombre",
+      "type": "text",
+      "value": "Paula Hervás Cabrera"
+     },
+     {
+      "label": "Cargo",
+      "type": "text",
+      "value": "Psicóloga General Sanitaria · Forense"
+     },
+     {
+      "label": "Etiquetas",
+      "type": "text",
+      "value": "Infanto-juvenil · Ansiedad · Depresión · Victimología"
+     },
+     {
+      "label": "Biografía",
+      "type": "text",
+      "value": "Graduada en Psicología por la Universidad Abat Oliba CEU. Máster en Psicología General Sanitaria (Universidad de Barcelona) y Máster en Psicología Jurídica y Forense (Universidad Autónoma de Barcelona). Formación y experiencia en psicología infanto-juvenil, regulación emocional, problemas afectivos (depresión y ansiedad) y victimología."
+     }
+    ],
+    "id": "7.5"
+   },
+   {
+    "label": "Laïa Mercedes Bataillou Almagro",
+    "fields": [
+     {
+      "label": "Foto",
+      "type": "image",
+      "value": "assets/images/equipo/laia-bataillou.jpg"
+     },
+     {
+      "label": "Nombre",
+      "type": "text",
+      "value": "Laïa Mercedes Bataillou Almagro"
+     },
+     {
+      "label": "Cargo",
+      "type": "text",
+      "value": "Psicóloga General Sanitaria · Infanto-juvenil"
+     },
+     {
+      "label": "Etiquetas",
+      "type": "text",
+      "value": "Infancia · Adolescencia"
+     },
+     {
+      "label": "Biografía",
+      "type": "text",
+      "value": "Graduada en Psicología por la Universidad Autónoma de Barcelona. Máster en Psicología Infantil y Juvenil: Técnicas y Estrategias de Intervención, y Máster en Psicología General Sanitaria por la Universidad de Barcelona."
+     }
+    ],
+    "id": "7.6"
+   },
+   {
+    "label": "Yasmina Yousfan Moreno",
+    "fields": [
+     {
+      "label": "Foto",
+      "type": "image",
+      "value": "assets/images/equipo/yasmina-yousfan.jpg"
+     },
+     {
+      "label": "Nombre",
+      "type": "text",
+      "value": "Yasmina Yousfan Moreno"
+     },
+     {
+      "label": "Cargo",
+      "type": "text",
+      "value": "Psicóloga General Sanitaria"
+     },
+     {
+      "label": "Etiquetas",
+      "type": "text",
+      "value": "TEA · Aprendizaje · Altas capacidades · Sistémica"
+     },
+     {
+      "label": "Biografía",
+      "type": "text",
+      "value": "Licenciada en Psicología por la Universidad de Barcelona y Máster en Psicología General Sanitaria (UNIE, 2025). Formación en Trastorno del Espectro Autista (enfoque ABA, juego y autismo, atención en el aula), modificabilidad cognitiva según el modelo Feuerstein, altas capacidades y modelos de intervención sistémico-relacionales."
+     }
+    ],
+    "id": "7.7"
+   }
+  ],
+  "n": 7,
+  "anchor": "#sobreScroll"
+ },
+ {
+  "id": "opiniones",
+  "title": "Opiniones de pacientes",
+  "intro": "Ahora mismo hay textos de ejemplo que NO se pueden publicar. Necesitamos opiniones reales (por ejemplo, copiadas de Google con permiso).",
+  "items": [
+   {
+    "label": "Opiniones reales",
+    "kind": "question",
+    "question": "Pega aquí de 3 a 6 opiniones reales. Para cada una: el texto, las iniciales de la persona y el tipo (p. ej. «Familia · Logopedia»).",
+    "id": "8.1"
+   }
+  ],
+  "n": 8,
+  "anchor": "#experienciasScroll"
+ },
+ {
+  "id": "faq",
+  "title": "Preguntas frecuentes",
+  "intro": "Desplegable con preguntas y respuestas. También ayuda a salir en Google.",
+  "items": [
+   {
+    "label": "Pregunta 1",
+    "fields": [
+     {
+      "label": "Pregunta",
+      "type": "text",
+      "value": "¿Cómo es la primera visita?"
+     },
+     {
+      "label": "Respuesta",
+      "type": "text",
+      "value": "Es una sesión de toma de contacto en la que escuchamos qué te trae al centro, te explicamos cómo trabajamos y, si lo deseas, marcamos los siguientes pasos. Sin compromiso."
+     }
+    ],
+    "id": "9.1"
+   },
+   {
+    "label": "Pregunta 2",
+    "fields": [
+     {
+      "label": "Pregunta",
+      "type": "text",
+      "value": "¿Atendéis a niños, adolescentes y adultos?"
+     },
+     {
+      "label": "Respuesta",
+      "type": "text",
+      "value": "Sí. Somos un equipo multidisciplinar especializado en intervención infanto-juvenil, adultos y familias, en castellano, catalán, inglés y francés."
+     }
+    ],
+    "id": "9.2"
+   },
+   {
+    "label": "Pregunta 3",
+    "fields": [
+     {
+      "label": "Pregunta",
+      "type": "text",
+      "value": "¿Ofrecéis terapia online?"
+     },
+     {
+      "label": "Respuesta",
+      "type": "text",
+      "value": "Sí, en plataforma segura. Es una opción válida para orientación a padres, terapia con adolescentes y adultos, y casos de reeducación o logopedia que lo permitan."
+     }
+    ],
+    "id": "9.3"
+   },
+   {
+    "label": "Pregunta 4",
+    "fields": [
+     {
+      "label": "Pregunta",
+      "type": "text",
+      "value": "¿Trabajáis con mutuas o aseguradoras?"
+     },
+     {
+      "label": "Respuesta",
+      "type": "text",
+      "value": "Consúltanos al contactar con nosotros: te informaremos de las condiciones, coberturas y vías disponibles según tu caso."
+     }
+    ],
+    "id": "9.4"
+   },
+   {
+    "label": "Pregunta 5",
+    "fields": [
+     {
+      "label": "Pregunta",
+      "type": "text",
+      "value": "¿Cuánto dura una terapia?"
+     },
+     {
+      "label": "Respuesta",
+      "type": "text",
+      "value": "Cada caso es distinto. Tras la primera visita estimamos un plan con frecuencia y duración orientativas, que se revisa periódicamente. La idea siempre es que el proceso te dé autonomía, no dependencia."
+     }
+    ],
+    "id": "9.5"
+   },
+   {
+    "label": "Pregunta 6",
+    "fields": [
+     {
+      "label": "Pregunta",
+      "type": "text",
+      "value": "¿Dónde está el Centre Suhevic?"
+     },
+     {
+      "label": "Respuesta",
+      "type": "text",
+      "value": "Estamos en Tressols 3 (local izquierdo), 08850 Gavà (Barcelona). Atendemos a personas de Gavà, Castelldefels, Viladecans, Sant Boi y el resto del Baix Llobregat, y también online. Puedes llamarnos al 936 38 36 47 o escribir a secretaria@centresuhevic.com."
+     }
+    ],
+    "id": "9.6"
+   },
+   {
+    "label": "Pregunta 7",
+    "fields": [
+     {
+      "label": "Pregunta",
+      "type": "text",
+      "value": "¿Qué especialidades ofrecéis?"
+     },
+     {
+      "label": "Respuesta",
+      "type": "text",
+      "value": "Psicología clínica infanto-juvenil y de adultos, terapia familiar y de pareja, EMDR para trauma, psicopedagogía y reeducación del aprendizaje, logopedia (lenguaje, habla, voz y deglución), neuropsicología y psicología forense (peritajes). También terapia online, terapia de grupos y orientación a padres."
+     }
+    ],
+    "id": "9.7"
+   },
+   {
+    "label": "Pregunta 8",
+    "fields": [
+     {
+      "label": "Pregunta",
+      "type": "text",
+      "value": "¿Quién forma el equipo?"
+     },
+     {
+      "label": "Respuesta",
+      "type": "text",
+      "value": "El centro lo dirige Nuria Suhevic Bellonch, psicóloga general sanitaria con máster en terapia familiar y en psicología forense. El equipo lo completan Mª Carmen Toledo Calderón, Paula Hervás Cabrera, Laïa Mercedes Bataillou Almagro y Yasmina Yousfan Moreno, psicólogas, y Montserrat Jové i Boncompte, logopeda y psicóloga."
+     }
+    ],
+    "id": "9.8"
+   }
+  ],
+  "n": 9,
+  "anchor": "#faqScroll"
+ },
+ {
+  "id": "contacto",
+  "title": "Contacto",
+  "intro": "Formulario y datos de contacto.",
+  "items": [
+   {
+    "label": "Título de la sección",
+    "fields": [
+     {
+      "label": "Título",
+      "type": "text",
+      "value": "Contacta con nosotros"
+     }
+    ],
+    "id": "10.1"
+   },
+   {
+    "label": "Motivos de consulta del formulario",
+    "fields": [
+     {
+      "label": "Opciones",
+      "type": "list",
+      "value": [
+       "Psicología clínica (adultos)",
+       "Psicología infanto-juvenil",
+       "Psicopedagogía",
+       "Logopedia",
+       "Neuropsicología",
+       "Psicología forense / peritajes",
+       "Terapia online",
+       "Terapia de grupos",
+       "Otros"
+      ]
+     }
+    ],
+    "id": "10.2"
+   },
+   {
+    "label": "Modalidad",
+    "fields": [
+     {
+      "label": "Opciones",
+      "type": "list",
+      "value": [
+       "Presencial · Gavà",
+       "Online",
+       "Indiferente"
+      ]
+     }
+    ],
+    "id": "10.3"
+   },
+   {
+    "label": "Teléfono",
+    "fields": [
+     {
+      "label": "Teléfono",
+      "type": "text",
+      "value": "936 38 36 47"
+     }
+    ],
+    "id": "10.4"
+   },
+   {
+    "label": "WhatsApp",
+    "note": "Ahora usa el mismo número del teléfono fijo. Si tenéis un móvil para WhatsApp, indícalo.",
+    "fields": [
+     {
+      "label": "Número",
+      "type": "text",
+      "value": "936 38 36 47"
+     }
+    ],
+    "id": "10.5"
+   },
+   {
+    "label": "Dirección",
+    "fields": [
+     {
+      "label": "Dirección",
+      "type": "text",
+      "value": "Tressols 3 (local izquierdo) · 08850 Gavà"
+     }
+    ],
+    "id": "10.6"
+   },
+   {
+    "label": "Email",
+    "fields": [
+     {
+      "label": "Email",
+      "type": "text",
+      "value": "secretaria@centresuhevic.com"
+     }
+    ],
+    "id": "10.7"
+   }
+  ],
+  "n": 10,
+  "anchor": "#contactoScroll"
+ },
+ {
+  "id": "pie",
+  "title": "Pie de página",
+  "intro": "La parte final de la web.",
+  "items": [
+   {
+    "label": "Frase",
+    "fields": [
+     {
+      "label": "Texto",
+      "type": "text",
+      "value": "ATENDIENDO EN GAVÀ"
+     }
+    ],
+    "id": "11.1"
+   },
+   {
+    "label": "Redes sociales",
+    "fields": [
+     {
+      "label": "Enlaces",
+      "type": "list",
+      "value": [
+       "Instagram: instagram.com/centrosuhevic",
+       "Facebook: facebook.com/Centrosuhevic"
+      ]
+     }
+    ],
+    "id": "11.2"
+   },
+   {
+    "label": "Texto legal",
+    "fields": [
+     {
+      "label": "Texto",
+      "type": "text",
+      "value": "© CENTRE SUHEVIC · NURIA SUHEVIC BELLONCH"
+     }
+    ],
+    "id": "11.3"
+   }
+  ],
+  "n": 11,
+  "anchor": "#pieScroll"
+ },
+ {
+  "id": "google",
+  "title": "Cómo aparecerá en Google",
+  "intro": "El título y la descripción que muestra Google en los resultados de búsqueda.",
+  "items": [
+   {
+    "label": "Resultado en Google",
+    "kind": "google",
+    "fields": [
+     {
+      "label": "Título",
+      "type": "text",
+      "value": "Centro de Psicología en Gavà · Logopedia y Psicopedagogía | Centre Suhevic"
+     },
+     {
+      "label": "Descripción",
+      "type": "text",
+      "value": "Centre Suhevic, centro de psicología en Gavà dirigido por Nuria Suhevic. Psicología clínica infantil, adolescentes y adultos, logopedia, psicopedagogía, neuropsicología y forense."
+     }
+    ],
+    "id": "12.1"
+   }
+  ],
+  "n": 12,
+  "anchor": null
+ },
+ {
+  "id": "pendientes",
+  "title": "Datos que necesitamos",
+  "intro": "Información que nos falta para terminar la web.",
+  "items": [
+   {
+    "label": "Horario",
+    "kind": "question",
+    "question": "¿Cuál es el horario de atención? (días y horas)",
+    "id": "13.1"
+   },
+   {
+    "label": "Nombre de la calle",
+    "kind": "question",
+    "question": "¿Cómo se escribe exactamente: «Tresols» o «Tressols»? Tiene que coincidir con vuestra ficha de Google Maps.",
+    "id": "13.2"
+   },
+   {
+    "label": "Mutuas y aseguradoras",
+    "kind": "question",
+    "question": "¿Trabajáis con alguna mutua o aseguradora? ¿Con cuáles?",
+    "id": "13.3"
+   },
+   {
+    "label": "Fotos en alta calidad",
+    "kind": "question",
+    "question": "¿Tenéis fotos propias del centro, del equipo o de las especialidades? Indica cuáles nos enviaréis.",
+    "id": "13.4"
+   },
+   {
+    "label": "Otros comentarios",
+    "kind": "question",
+    "question": "¿Algo más que quieras añadir, quitar o cambiar en la web?",
+    "id": "13.5"
+   }
+  ],
+  "n": 13,
+  "anchor": null
+ }
+];
+        // Guardado en la nube (Google Sheets + Apps Script, ver tools/revision-apps-script.gs).
+        // Si API_URL está vacío, todo se guarda solo en el navegador y se envía por email.
+        const API_URL = "https://script.google.com/macros/s/AKfycbw9ReDeqSYt7Op6zzhx0awWP0OySIVX7eLjCZGTkzJLYC8cyjQ2o9Z_E2xiz0457849/exec";
+        const API_KEY = "_NZesm-r7uIbAlAVtIw9vP9_";
+        const CLOUD = !!API_URL;
+        const KEY = "suhevic-revision-v1";
+
+        let state = { items: {}, sections: {}, reviewer: "", photosNote: "", updatedAt: 0, sent: [] };
+        try { state = Object.assign(state, JSON.parse(localStorage.getItem(KEY) || "{}")); } catch (e) {}
+
+        const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+        const itemState = (id) => (state.items[id] = state.items[id] || { status: "", changes: {}, answer: "" });
+
+        function setSaved(text, cls) {
+            const el = document.getElementById("saved");
+            el.textContent = text;
+            el.className = "saved" + (cls ? " " + cls : "");
+        }
+
+        let saveTimer, cloudTimer;
+        function save() {
+            state.updatedAt = Date.now();
+            try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+            refresh();
+            if (CLOUD) {
+                setSaved("Guardando…");
+                clearTimeout(cloudTimer);
+                cloudTimer = setTimeout(cloudSave, 1200);
+            } else {
+                setSaved("Guardado ✓");
+                clearTimeout(saveTimer);
+                saveTimer = setTimeout(() => setSaved("Se guarda automáticamente"), 1500);
+            }
+        }
+
+        // Filas legibles para la hoja "Respuestas"
+        function rows() {
+            const out = [];
+            DATA.forEach((sec) => {
+                sec.items.forEach((it) => {
+                    const st = itemState(it.id);
+                    if (it.kind === "question") {
+                        out.push([it.id, sec.title, it.label, st.answer && st.answer.trim() ? "Respondido" : "Pendiente", (st.answer || "").trim(), "", st.at || ""]);
+                        return;
+                    }
+                    const ch = st.status === "change"
+                        ? it.fields.map((f, i) => ((st.changes[i] || "").trim() ? `${f.label}: ${st.changes[i].trim()}` : "")).filter(Boolean).join("\n")
+                        : "";
+                    const label = st.status === "ok" ? "Está bien" : st.status === "change" ? "Cambiar" : "Pendiente";
+                    out.push([it.id, sec.title, it.label, label, ch, st.status === "change" ? (st.changes.extra || "").trim() : "", st.at || ""]);
+                });
+                const c = (state.sections[sec.id] || "").trim();
+                if (c) out.push([String(sec.n), sec.title, "Comentario general", "Respondido", c, "", ""]);
+            });
+            out.push(["—", "Envío", "Nombre / fotos", state.reviewer || state.photosNote ? "Respondido" : "Pendiente", [state.reviewer, state.photosNote].filter(Boolean).join(" · "), "", ""]);
+            return out;
+        }
+
+        async function api(payload) {
+            // text/plain evita la petición previa CORS que Apps Script no admite
+            const res = await fetch(API_URL, { method: "POST", body: JSON.stringify({ k: API_KEY, ...payload }) });
+            const data = await res.json();
+            if (!data.ok) throw new Error(data.error || "error");
+            return data;
+        }
+
+        async function cloudSave() {
+            try {
+                await api({ action: "save", state, rows: rows() });
+                setSaved("Guardado en la nube ✓", "cloud");
+            } catch (e) {
+                setSaved("Sin conexión: guardado solo en este navegador", "error");
+                clearTimeout(cloudTimer);
+                cloudTimer = setTimeout(cloudSave, 15000);
+            }
+        }
+
+        async function cloudLoad() {
+            document.body.classList.add("loading");
+            setSaved("Cargando tus respuestas…");
+            const ctrl = new AbortController();
+            const timer = setTimeout(() => ctrl.abort(), 8000);
+            try {
+                const res = await fetch(`${API_URL}?k=${encodeURIComponent(API_KEY)}`, { signal: ctrl.signal });
+                const data = await res.json();
+                const remote = data && data.state;
+                if (remote && (remote.updatedAt || 0) > (state.updatedAt || 0)) {
+                    state = Object.assign({ items: {}, sections: {}, sent: [] }, remote);
+                    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+                    render();
+                } else if ((state.updatedAt || 0) > ((remote && remote.updatedAt) || 0)) {
+                    cloudSave(); // lo local es más reciente (p. ej. se trabajó sin conexión)
+                }
+                setSaved("Guardado en la nube ✓", "cloud");
+            } catch (e) {
+                setSaved("Sin conexión: guardado solo en este navegador", "error");
+            } finally {
+                clearTimeout(timer);
+                document.body.classList.remove("loading");
+                renderHistory();
+            }
+        }
+
+        function renderField(f) {
+            let v = "";
+            if (f.type === "text") v = `<div class="field-text">${esc(f.value)}</div>`;
+            else if (f.type === "list") v = `<ul class="field-list">${f.value.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>`;
+            else if (f.type === "image") {
+                const logo = /logos\//.test(f.value) ? " logo" : "";
+                v = `<div class="field-media${logo}"><img src="${esc(f.value)}" alt="" loading="lazy"></div>`;
+            } else if (f.type === "video") {
+                v = `<div class="field-media"><video controls muted playsinline preload="${f.poster ? "none" : "metadata"}"${f.poster ? ` poster="${esc(f.poster)}"` : ""}><source src="${esc(f.value)}" type="video/mp4"></video></div>
+                     <a class="media-link" href="${esc(f.value)}" target="_blank" rel="noopener">Abrir el vídeo en otra pestaña ↗</a>`;
+            }
+            return `<div><div class="field-label">${esc(f.label)}</div>${v}${f.note ? `<div class="note">${esc(f.note)}</div>` : ""}</div>`;
+        }
+
+        function changePlaceholder(f) {
+            if (f.type === "image") return "Describe la foto nueva o indica el archivo que nos enviarás (déjalo vacío si no cambia)";
+            if (f.type === "video") return "Describe el vídeo nuevo o indica el archivo que nos enviarás (déjalo vacío si no cambia)";
+            if (f.type === "list") return "Escribe la lista nueva, un elemento por línea (déjalo vacío si no cambia)";
+            return "Escribe el texto nuevo (déjalo vacío si no cambia)";
+        }
+
+        function renderItem(it) {
+            const st = itemState(it.id);
+            const head = `<div class="item-head"><span class="code">${it.id}</span><h3 class="item-title">${esc(it.label)}</h3></div>`;
+            if (it.kind === "question") {
+                return `<article class="item" id="i-${it.id}" data-status="${st.answer ? "ok" : ""}">${head}
+                    <div class="question-body"><p>${esc(it.question)}</p>
+                    <textarea rows="3" data-answer="${it.id}" aria-label="${esc(it.label)}">${esc(st.answer || "")}</textarea></div></article>`;
+            }
+            let body;
+            if (it.kind === "google") {
+                const [t, d] = it.fields;
+                body = `<div class="google"><div class="g-url">www.centresuhevic.com</div><div class="g-title">${esc(t.value)}</div><div class="g-desc">${esc(d.value)}</div></div>`;
+            } else {
+                body = it.fields.map(renderField).join("");
+            }
+            const note = it.note ? `<div class="note">${esc(it.note)}</div>` : "";
+            const changes = it.fields.map((f, i) => `<div>
+                    <label class="input-label" for="c-${it.id}-${i}">${esc(f.label)} · nuevo</label>
+                    <textarea id="c-${it.id}-${i}" rows="${f.type === "text" && f.value.length > 140 ? 5 : 2}" data-change="${it.id}" data-field="${i}" placeholder="${esc(changePlaceholder(f))}">${esc(st.changes[i] || "")}</textarea>
+                </div>`).join("");
+            return `<article class="item" id="i-${it.id}" data-status="${st.status}">${head}
+                <div class="item-body">${body}${note}</div>
+                <div class="decision" role="radiogroup" aria-label="Revisión de ${esc(it.label)}">
+                    <label class="choice ok"><input type="radio" name="r-${it.id}" value="ok" ${st.status === "ok" ? "checked" : ""}><span>Está bien</span></label>
+                    <label class="choice change"><input type="radio" name="r-${it.id}" value="change" ${st.status === "change" ? "checked" : ""}><span>Quiero cambiarlo</span></label>
+                </div>
+                <div class="changes"><p class="changes-hint">Rellena solo lo que quieras cambiar.</p>${changes}
+                    <div><label class="input-label" for="c-${it.id}-extra">Comentario</label>
+                    <textarea id="c-${it.id}-extra" rows="2" data-change="${it.id}" data-field="extra" placeholder="Cualquier otra indicación (opcional)">${esc(st.changes.extra || "")}</textarea></div>
+                </div></article>`;
+        }
+
+        function render() {
+            document.getElementById("sections").innerHTML = DATA.map((sec) => `
+                <section class="section" id="s-${sec.id}">
+                    <div class="section-head"><span class="section-num">${String(sec.n).padStart(2, "0")}</span><h2>${esc(sec.title)}</h2>${sec.anchor ? `<a class="section-link" href="index.html${sec.anchor}" target="_blank" rel="noopener">Ver en la web ↗</a>` : ""}</div>
+                    <p class="section-intro">${esc(sec.intro)}</p>
+                    ${sec.items.map(renderItem).join("")}
+                    <details class="section-comment"${state.sections[sec.id] ? " open" : ""}>
+                        <summary>+ Comentarios generales sobre «${esc(sec.title)}»</summary>
+                        <textarea rows="3" data-section="${sec.id}" aria-label="Comentarios sobre ${esc(sec.title)}" placeholder="Por ejemplo: añadir algo que falta, cambiar el orden…">${esc(state.sections[sec.id] || "")}</textarea>
+                    </details>
+                </section>`).join("");
+            document.getElementById("reviewer").value = state.reviewer || "";
+            document.getElementById("photosNote").value = state.photosNote || "";
+            refresh();
+        }
+
+        const reviewable = () => DATA.flatMap((s) => s.items.filter((i) => i.kind !== "question").map((i) => ({ ...i, sec: s })));
+
+        function refresh() {
+            const all = reviewable();
+            const done = all.filter((i) => itemState(i.id).status).length;
+            document.getElementById("progressLabel").textContent = `${done} de ${all.length} revisados`;
+            document.getElementById("progressBar").style.width = `${all.length ? (done / all.length) * 100 : 0}%`;
+            document.getElementById("toc").innerHTML = DATA.map((sec) => {
+                const its = sec.items.filter((i) => i.kind !== "question");
+                const d = its.filter((i) => itemState(i.id).status).length;
+                const complete = its.length ? d === its.length : sec.items.some((i) => itemState(i.id).answer);
+                return `<li><a href="#s-${sec.id}" class="${complete ? "done" : ""}">${esc(sec.title)} <span class="count">${its.length ? `${d}/${its.length}` : "✎"}</span></a></li>`;
+            }).join("");
+            const ok = all.filter((i) => itemState(i.id).status === "ok").length;
+            const ch = all.filter((i) => itemState(i.id).status === "change").length;
+            document.getElementById("stats").innerHTML =
+                `<div><b>${ok}</b>están bien</div><div><b>${ch}</b>a cambiar</div><div><b>${all.length - done}</b>sin revisar</div>`;
+            const pending = all.filter((i) => !itemState(i.id).status);
+            const m = document.getElementById("missing");
+            m.hidden = !pending.length;
+            m.textContent = pending.length ? `Faltan por revisar: ${pending.slice(0, 12).map((i) => i.id).join(", ")}${pending.length > 12 ? "…" : ""}. Puedes enviarlo igualmente.` : "";
+        }
+
+        document.addEventListener("change", (e) => {
+            const r = e.target.closest('input[type="radio"][name^="r-"]');
+            if (!r) return;
+            const id = r.name.slice(2);
+            itemState(id).status = r.value;
+            itemState(id).at = new Date().toISOString();
+            document.getElementById("i-" + id).dataset.status = r.value;
+            if (r.value === "change") {
+                const first = document.querySelector(`#i-${CSS.escape(id)} .changes textarea`);
+                if (first) setTimeout(() => first.focus(), 50);
+            }
+            save();
+        });
+        document.addEventListener("input", (e) => {
+            const t = e.target;
+            if (t.dataset.change) {
+                itemState(t.dataset.change).changes[t.dataset.field] = t.value;
+                itemState(t.dataset.change).at = new Date().toISOString();
+            }
+            else if (t.dataset.answer) {
+                itemState(t.dataset.answer).answer = t.value;
+                itemState(t.dataset.answer).at = new Date().toISOString();
+                document.getElementById("i-" + t.dataset.answer).dataset.status = t.value.trim() ? "ok" : "";
+            } else if (t.dataset.section) state.sections[t.dataset.section] = t.value;
+            else if (t.id === "reviewer") state.reviewer = t.value;
+            else if (t.id === "photosNote") state.photosNote = t.value;
+            else return;
+            save();
+        });
+
+        function summary() {
+            const lines = [];
+            const all = reviewable();
+            const ok = all.filter((i) => itemState(i.id).status === "ok").length;
+            const ch = all.filter((i) => itemState(i.id).status === "change").length;
+            lines.push("REVISIÓN DE CONTENIDOS · WEB CENTRE SUHEVIC");
+            if (state.reviewer) lines.push("Revisado por: " + state.reviewer);
+            lines.push(`Fecha: ${new Date().toLocaleDateString("es-ES")}`);
+            lines.push(`Resumen: ${ok} están bien · ${ch} a cambiar · ${all.length - ok - ch} sin revisar`);
+            if (state.photosNote) lines.push("Fotos: " + state.photosNote);
+            DATA.forEach((sec) => {
+                const out = [];
+                sec.items.forEach((it) => {
+                    const st = itemState(it.id);
+                    if (it.kind === "question") {
+                        if (st.answer && st.answer.trim()) out.push(`[${it.id}] ${it.label}\n${st.answer.trim()}`);
+                        return;
+                    }
+                    if (st.status !== "change") return;
+                    const parts = [`[${it.id}] ${it.label} → CAMBIAR`];
+                    it.fields.forEach((f, i) => {
+                        const v = (st.changes[i] || "").trim();
+                        if (v) parts.push(`  · ${f.label}: ${v}`);
+                    });
+                    if ((st.changes.extra || "").trim()) parts.push(`  · Comentario: ${st.changes.extra.trim()}`);
+                    if (parts.length === 1) parts.push("  (sin indicar el cambio)");
+                    out.push(parts.join("\n"));
+                });
+                const c = (state.sections[sec.id] || "").trim();
+                if (c) out.push(`Comentarios de la sección: ${c}`);
+                const pending = sec.items.filter((i) => i.kind !== "question" && !itemState(i.id).status).map((i) => i.id);
+                if (pending.length) out.push(`Sin revisar: ${pending.join(", ")}`);
+                if (out.length) lines.push("", `── ${String(sec.n).padStart(2, "0")} ${sec.title.toUpperCase()} ──`, ...out);
+            });
+            lines.push("", "Todo lo que no aparece arriba está marcado como «Está bien».");
+            return lines.join("\n");
+        }
+
+        function toast(msg) {
+            const t = document.getElementById("toast");
+            t.textContent = msg; t.classList.add("show");
+            setTimeout(() => t.classList.remove("show"), 2200);
+        }
+        async function copy() {
+            try { await navigator.clipboard.writeText(summary()); toast("Respuestas copiadas"); return true; }
+            catch (e) { toast("No se pudo copiar"); return false; }
+        }
+        document.getElementById("btnCopy").addEventListener("click", copy);
+        document.getElementById("btnPrint").addEventListener("click", () => {
+            document.querySelectorAll(".section-comment").forEach((d) => { if (d.querySelector("textarea").value.trim()) d.open = true; });
+            window.print();
+        });
+        function renderHistory() {
+            const h = document.getElementById("history");
+            const sent = state.sent || [];
+            h.innerHTML = sent.length
+                ? sent.slice(-5).reverse().map((d) => `<li>✓ Enviado el ${new Date(d).toLocaleString("es-ES", { dateStyle: "medium", timeStyle: "short" })}</li>`).join("")
+                : "";
+        }
+
+        document.getElementById("btnMail").addEventListener("click", async (ev) => {
+            if (CLOUD) {
+                const btn = ev.currentTarget;
+                btn.disabled = true;
+                btn.textContent = "Enviando…";
+                try {
+                    clearTimeout(cloudTimer);
+                    await api({ action: "save", state, rows: rows() });
+                    await api({ action: "notify", reviewer: state.reviewer, summary: summary() });
+                    state.sent = [...(state.sent || []), new Date().toISOString()];
+                    save();
+                    renderHistory();
+                    toast("¡Enviado! Puedes seguir revisando cuando quieras");
+                } catch (e) {
+                    toast("No se pudo enviar. Revisa la conexión e inténtalo de nuevo");
+                } finally {
+                    btn.disabled = false;
+                    btn.textContent = "Enviar lo revisado hasta ahora";
+                }
+                return;
+            }
+            const body = summary();
+            const subject = "Revisión de contenidos · Web Centre Suhevic";
+            let url = `mailto:${REVIEW_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            // Algunos programas de correo cortan los enlaces muy largos: copiamos también al portapapeles
+            if (url.length > 1800) {
+                await copy();
+                url = `mailto:${REVIEW_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent("(Pega aquí las respuestas: ya están copiadas, usa Cmd+V / Ctrl+V)\n\n")}`;
+                toast("Respuestas copiadas: pégalas en el email");
+            }
+            window.location.href = url;
+        });
+
+        if (CLOUD) {
+            document.getElementById("btnMail").textContent = "Enviar lo revisado hasta ahora";
+            document.getElementById("sendHelp").textContent =
+                "Tus respuestas se guardan solas y puedes volver cuando quieras, desde cualquier dispositivo. Pulsa el botón cada vez que termines una parte para que nos llegue el aviso.";
+        }
+        render();
+        renderHistory();
+        if (CLOUD) cloudLoad();
+    </script>
+</body>
+
+</html>

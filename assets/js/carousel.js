@@ -297,13 +297,6 @@ window.onload = function () {
         $for.on("beforeChange", function (event, slick, currentSlide, nextSlide) {
             $tags.removeClass("active");
             $tags.eq(nextSlide).addClass("active");
-
-            const $award = $(".image-award");
-            if ((nextSlide + 1) % 3 === 0) {
-                $award.addClass("active");
-            } else {
-                $award.removeClass("active");
-            }
         });
 
         $tags.eq(0).addClass("active");
